@@ -1,0 +1,14 @@
+# PC 单测编译产物
+host/test_word_mode
+host/test_wordline
+*.o
+*.pyc
+__pycache__/
+
+# 编辑器 / 系统
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# 注意：assets/audio/*.adp1 与 *.opus 是成品资产，必须提交，不要忽略

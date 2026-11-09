@@ -1,0 +1,672 @@
+{
+  "source": "https://www.bbyingyu.com/",
+  "fetched_at": "2026-11-09",
+  "site": {
+    "name": "宝宝英语 · 英语单词卡片生成器",
+    "output": "A4 打印 PNG / 打印",
+    "art": "emoji 彩色图标 + 单词 + 音标 + 中文",
+    "auth": "免费、无需登录、纯前端",
+    "themes": 23,
+    "words": 384
+  },
+  "match": {
+    "ours": 60,
+    "hit": 51,
+    "miss": 9
+  },
+  "usage": "仅作 emoji 图案描图参照（banana / milk / tree / eye）；音标不采用，不并入 words/ 词表，words/ 零改动",
+  "ipa_enrichment": [
+    {
+      "unit": "unit-01",
+      "word": "apple",
+      "cn": "苹果",
+      "ipa": "/ˈæpəl/",
+      "emoji": "🍎",
+      "site_theme": "水果",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-01",
+      "word": "banana",
+      "cn": "香蕉",
+      "ipa": "/bəˈnænə/",
+      "emoji": "🍌",
+      "site_theme": "水果",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-01",
+      "word": "orange",
+      "cn": "橙子",
+      "ipa": "/ˈɔːrɪndʒ/",
+      "emoji": "🟧",
+      "site_theme": "颜色",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-01",
+      "word": "grape",
+      "cn": "葡萄",
+      "ipa": "/ɡreɪp/",
+      "emoji": "🍇",
+      "site_theme": "水果",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-01",
+      "word": "pear",
+      "cn": "梨",
+      "ipa": "/per/",
+      "emoji": "🍐",
+      "site_theme": "水果",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-01",
+      "word": "strawberry",
+      "cn": "草莓",
+      "ipa": "/ˈstrɔːberi/",
+      "emoji": "🍓",
+      "site_theme": "水果",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-01",
+      "word": "watermelon",
+      "cn": "西瓜",
+      "ipa": "/ˈwɔːtərmelən/",
+      "emoji": "🍉",
+      "site_theme": "水果",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-01",
+      "word": "peach",
+      "cn": "桃子",
+      "ipa": "/piːtʃ/",
+      "emoji": "🍑",
+      "site_theme": "水果",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-01",
+      "word": "lemon",
+      "cn": "柠檬",
+      "ipa": "/ˈlemən/",
+      "emoji": "🍋",
+      "site_theme": "水果",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-01",
+      "word": "cherry",
+      "cn": "樱桃",
+      "ipa": "/ˈtʃeri/",
+      "emoji": "🍒",
+      "site_theme": "水果",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-02",
+      "word": "cat",
+      "cn": "猫",
+      "ipa": "/kæt/",
+      "emoji": "🐱",
+      "site_theme": "动物",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-02",
+      "word": "dog",
+      "cn": "狗",
+      "ipa": "/dɔːɡ/",
+      "emoji": "🐶",
+      "site_theme": "动物",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-02",
+      "word": "bird",
+      "cn": "鸟",
+      "ipa": "/bɜːrd/",
+      "emoji": "🐦",
+      "site_theme": "动物",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-02",
+      "word": "fish",
+      "cn": "鱼",
+      "ipa": "/fɪʃ/",
+      "emoji": "🐟",
+      "site_theme": "动物",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-02",
+      "word": "rabbit",
+      "cn": "兔子",
+      "ipa": "/ˈræbɪt/",
+      "emoji": "🐰",
+      "site_theme": "动物",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-02",
+      "word": "bear",
+      "cn": "熊",
+      "ipa": "/ber/",
+      "emoji": "🐻",
+      "site_theme": "动物",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-02",
+      "word": "elephant",
+      "cn": "大象",
+      "ipa": "/ˈelɪfənt/",
+      "emoji": "🐘",
+      "site_theme": "动物",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-02",
+      "word": "duck",
+      "cn": "鸭子",
+      "ipa": null,
+      "emoji": null,
+      "site_theme": null,
+      "status": "miss"
+    },
+    {
+      "unit": "unit-02",
+      "word": "monkey",
+      "cn": "猴子",
+      "ipa": "/ˈmʌŋki/",
+      "emoji": "🐒",
+      "site_theme": "动物",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-02",
+      "word": "tiger",
+      "cn": "老虎",
+      "ipa": "/ˈtaɪɡər/",
+      "emoji": "🐯",
+      "site_theme": "动物",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-03",
+      "word": "red",
+      "cn": "红色",
+      "ipa": "/red/",
+      "emoji": "🟥",
+      "site_theme": "颜色",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-03",
+      "word": "blue",
+      "cn": "蓝色",
+      "ipa": "/bluː/",
+      "emoji": "🟦",
+      "site_theme": "颜色",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-03",
+      "word": "yellow",
+      "cn": "黄色",
+      "ipa": "/ˈjel.oʊ/",
+      "emoji": "🟨",
+      "site_theme": "颜色",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-03",
+      "word": "green",
+      "cn": "绿色",
+      "ipa": "/ɡriːn/",
+      "emoji": "🟩",
+      "site_theme": "颜色",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-03",
+      "word": "circle",
+      "cn": "圆形",
+      "ipa": "/ˈsɜːrkl/",
+      "emoji": "⭕",
+      "site_theme": "几何形状",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-03",
+      "word": "square",
+      "cn": "正方形",
+      "ipa": "/skwer/",
+      "emoji": "⬛",
+      "site_theme": "几何形状",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-03",
+      "word": "triangle",
+      "cn": "三角形",
+      "ipa": "/ˈtraɪæŋɡl/",
+      "emoji": "🔺",
+      "site_theme": "几何形状",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-03",
+      "word": "star",
+      "cn": "星形",
+      "ipa": "/stɑːr/",
+      "emoji": "⭐",
+      "site_theme": "自然地理",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-03",
+      "word": "heart",
+      "cn": "心形",
+      "ipa": "/hɑːrt/",
+      "emoji": "🫀",
+      "site_theme": "身体部位",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-03",
+      "word": "rainbow",
+      "cn": "彩虹",
+      "ipa": "/ˈreɪnboʊ/",
+      "emoji": "🌈",
+      "site_theme": "天气",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-04",
+      "word": "hand",
+      "cn": "手",
+      "ipa": "/hænd/",
+      "emoji": "🤚",
+      "site_theme": "身体部位",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-04",
+      "word": "eye",
+      "cn": "眼睛",
+      "ipa": "/aɪ/",
+      "emoji": "👀",
+      "site_theme": "身体部位",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-04",
+      "word": "nose",
+      "cn": "鼻子",
+      "ipa": "/noʊz/",
+      "emoji": "👃",
+      "site_theme": "身体部位",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-04",
+      "word": "mouth",
+      "cn": "嘴巴",
+      "ipa": "/maʊθ/",
+      "emoji": "👄",
+      "site_theme": "身体部位",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-04",
+      "word": "ear",
+      "cn": "耳朵",
+      "ipa": "/ɪr/",
+      "emoji": "👂",
+      "site_theme": "身体部位",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-04",
+      "word": "foot",
+      "cn": "脚",
+      "ipa": "/fʊt/",
+      "emoji": "🦶",
+      "site_theme": "身体部位",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-04",
+      "word": "mom",
+      "cn": "妈妈",
+      "ipa": null,
+      "emoji": null,
+      "site_theme": null,
+      "status": "miss"
+    },
+    {
+      "unit": "unit-04",
+      "word": "dad",
+      "cn": "爸爸",
+      "ipa": null,
+      "emoji": null,
+      "site_theme": null,
+      "status": "miss"
+    },
+    {
+      "unit": "unit-04",
+      "word": "baby",
+      "cn": "婴儿",
+      "ipa": "/ˈbeɪbi/",
+      "emoji": "👶",
+      "site_theme": "家庭成员",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-04",
+      "word": "friend",
+      "cn": "朋友",
+      "ipa": null,
+      "emoji": null,
+      "site_theme": null,
+      "status": "miss"
+    },
+    {
+      "unit": "unit-05",
+      "word": "milk",
+      "cn": "牛奶",
+      "ipa": "/mɪlk/",
+      "emoji": "🥛",
+      "site_theme": "食物",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-05",
+      "word": "bread",
+      "cn": "面包",
+      "ipa": "/bred/",
+      "emoji": "🍞",
+      "site_theme": "食物",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-05",
+      "word": "egg",
+      "cn": "鸡蛋",
+      "ipa": "/eɡ/",
+      "emoji": "🥚",
+      "site_theme": "食物",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-05",
+      "word": "cake",
+      "cn": "蛋糕",
+      "ipa": "/keɪk/",
+      "emoji": "🎂",
+      "site_theme": "食物",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-05",
+      "word": "rice",
+      "cn": "米饭",
+      "ipa": "/raɪs/",
+      "emoji": "🍚",
+      "site_theme": "食物",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-05",
+      "word": "noodle",
+      "cn": "面条",
+      "ipa": null,
+      "emoji": null,
+      "site_theme": null,
+      "status": "miss"
+    },
+    {
+      "unit": "unit-05",
+      "word": "water",
+      "cn": "水",
+      "ipa": null,
+      "emoji": null,
+      "site_theme": null,
+      "status": "miss"
+    },
+    {
+      "unit": "unit-05",
+      "word": "juice",
+      "cn": "果汁",
+      "ipa": null,
+      "emoji": null,
+      "site_theme": null,
+      "status": "miss"
+    },
+    {
+      "unit": "unit-05",
+      "word": "cookie",
+      "cn": "饼干",
+      "ipa": "/ˈkʊki/",
+      "emoji": "🍪",
+      "site_theme": "食物",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-05",
+      "word": "ice cream",
+      "cn": "冰淇淋",
+      "ipa": "/ˈaɪs kriːm/",
+      "emoji": "🍦",
+      "site_theme": "食物",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-06",
+      "word": "sun",
+      "cn": "太阳",
+      "ipa": "/sʌn/",
+      "emoji": "☀️",
+      "site_theme": "自然地理",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-06",
+      "word": "moon",
+      "cn": "月亮",
+      "ipa": "/muːn/",
+      "emoji": "🌙",
+      "site_theme": "自然地理",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-06",
+      "word": "cloud",
+      "cn": "云",
+      "ipa": "/klaʊd/",
+      "emoji": "☁️",
+      "site_theme": "自然地理",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-06",
+      "word": "tree",
+      "cn": "树",
+      "ipa": "/triː/",
+      "emoji": "🌳",
+      "site_theme": "自然地理",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-06",
+      "word": "flower",
+      "cn": "花",
+      "ipa": "/ˈflaʊər/",
+      "emoji": "🌻",
+      "site_theme": "自然地理",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-06",
+      "word": "car",
+      "cn": "汽车",
+      "ipa": "/kɑːr/",
+      "emoji": "🚗",
+      "site_theme": "交通工具",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-06",
+      "word": "bus",
+      "cn": "公交车",
+      "ipa": "/bʌs/",
+      "emoji": "🚌",
+      "site_theme": "交通工具",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-06",
+      "word": "bike",
+      "cn": "自行车",
+      "ipa": null,
+      "emoji": null,
+      "site_theme": null,
+      "status": "miss"
+    },
+    {
+      "unit": "unit-06",
+      "word": "boat",
+      "cn": "船",
+      "ipa": "/boʊt/",
+      "emoji": "⛵",
+      "site_theme": "交通工具",
+      "status": "hit"
+    },
+    {
+      "unit": "unit-06",
+      "word": "plane",
+      "cn": "飞机",
+      "ipa": null,
+      "emoji": null,
+      "site_theme": null,
+      "status": "miss"
+    }
+  ],
+  "miss_mapping": [
+    {
+      "ours": "mom",
+      "cn": "妈妈",
+      "suggest": "mother",
+      "ipa": "/ˈmʌðər/",
+      "emoji": "👩",
+      "note": "网站用正式词，可保留 mom 口语词"
+    },
+    {
+      "ours": "dad",
+      "cn": "爸爸",
+      "suggest": "father",
+      "ipa": "/ˈfɑːðər/",
+      "emoji": "👨",
+      "note": "同上"
+    },
+    {
+      "ours": "noodle",
+      "cn": "面条",
+      "suggest": "noodles",
+      "ipa": "/ˈnuːdlz/",
+      "emoji": "🍜",
+      "note": "复数形式"
+    },
+    {
+      "ours": "bike",
+      "cn": "自行车",
+      "suggest": "bicycle",
+      "ipa": "/ˈbaɪsɪkl/",
+      "emoji": "🚲",
+      "note": "同义词"
+    },
+    {
+      "ours": "plane",
+      "cn": "飞机",
+      "suggest": "airplane",
+      "ipa": "/ˈerpleɪn/",
+      "emoji": "✈️",
+      "note": "同义词"
+    },
+    {
+      "ours": "water",
+      "cn": "水",
+      "suggest": "drink",
+      "ipa": "/drɪŋk/",
+      "emoji": "🥤",
+      "note": "网站无 water，仅近似"
+    },
+    {
+      "ours": "juice",
+      "cn": "果汁",
+      "suggest": null,
+      "ipa": null,
+      "emoji": null,
+      "note": "网站 384 词中无，需自备"
+    },
+    {
+      "ours": "duck",
+      "cn": "鸭子",
+      "suggest": null,
+      "ipa": null,
+      "emoji": null,
+      "note": "网站 384 词中无，需自备"
+    },
+    {
+      "ours": "friend",
+      "cn": "朋友",
+      "suggest": null,
+      "ipa": null,
+      "emoji": null,
+      "note": "网站 384 词中无，需自备"
+    }
+  ],
+  "eye_for_hand_swap": {
+    "word": "eye",
+    "ipa": "/aɪ/",
+    "cn": "眼睛",
+    "emoji": "👀"
+  },
+  "themes_available": [
+    "日常动作",
+    "动物",
+    "身体部位",
+    "穿戴",
+    "颜色",
+    "电子产品",
+    "家庭成员",
+    "情绪与表情",
+    "食物",
+    "水果",
+    "家居用品",
+    "昆虫",
+    "职业",
+    "自然地理",
+    "反义词",
+    "植物",
+    "日常起居",
+    "学校用品",
+    "几何形状",
+    "体育运动",
+    "交通工具",
+    "蔬菜",
+    "天气"
+  ],
+  "decision": {
+    "route": "A",
+    "date": "2026-11-09",
+    "ipa": "不做（小朋友看不懂，不新增、不改动）",
+    "words_table": "零改动",
+    "landed": "banana/milk/tree 重描、hand 换 eye"
+  }
+}

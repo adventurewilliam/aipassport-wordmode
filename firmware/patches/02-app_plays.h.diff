@@ -1,0 +1,16 @@
+--- a/components/app/include/app/app_plays.h
++++ b/components/app/include/app/app_plays.h
+@@
+ bool app_plays_init(const app_plays_config_t *config);
+ bool app_plays_open(int best); // LVGL context/lock required; does no IO.
+ bool app_plays_open_xiaozhi(int best); // Same lock contract; queues normal startup.
++/* P0 单词模式：与 app_plays_open_xiaozhi 相同的 LVGL 锁契约。
++ * open 只做「请求停小智」，真正进入在 wordmode_app_pump() 里等
++ * xiaozhi_stopped() 后完成，避免在锁内等待网络/音频资源释放。*/
++bool app_plays_open_wordmode(int best);
++bool app_plays_wordmode_active(void);
++/* 转发完整裸手势（含 PRESS），长按后的松手由表现层负责吞掉，
++ * 沿用 XIAOZHI_BUILD.txt 第 6 条既有约束。*/
++void app_plays_wordmode_button(int index, hal_btn_event_t event);
+ bool app_plays_active(void);
+ bool app_plays_clicker_active(void);

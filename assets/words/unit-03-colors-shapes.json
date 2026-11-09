@@ -1,0 +1,18 @@
+{
+  "id": "unit-03",
+  "title": "颜色与形状",
+  "slug": "colors-shapes",
+  "age": 6,
+  "words": [
+    { "id": "red", "word": "red", "ipa": "/red/", "cn": "红色", "syllables": 1, "say": "像苹果、像消防车，红红的", "draw": "画一个苹果轮廓代表红色（单色线图，不涂色）", "strokes_max": 24, "tags": ["color"] },
+    { "id": "blue", "word": "blue", "ipa": "/bluː/", "cn": "蓝色", "syllables": 1, "say": "像天空、像大海，蓝蓝的", "draw": "一朵云 + 两道波浪线代表蓝色", "strokes_max": 24, "tags": ["color"] },
+    { "id": "yellow", "word": "yellow", "ipa": "/ˈjeləʊ/", "cn": "黄色", "syllables": 2, "say": "像太阳、像香蕉，黄黄的", "draw": "一个圆 + 四周 8 条放射短线（太阳）", "strokes_max": 20, "tags": ["color"] },
+    { "id": "green", "word": "green", "ipa": "/ɡriːn/", "cn": "绿色", "syllables": 1, "say": "像树叶、像草地，绿绿的", "draw": "一片带中脉的叶子", "strokes_max": 18, "tags": ["color"] },
+    { "id": "circle", "word": "circle", "ipa": "/ˈsɜːkl/", "cn": "圆形", "syllables": 2, "say": "圆圆的，一个角都没有", "draw": "一个尽量大的正圆", "strokes_max": 12, "tags": ["shape"] },
+    { "id": "square", "word": "square", "ipa": "/skweə(r)/", "cn": "正方形", "syllables": 1, "say": "四条边一样长，四个角", "draw": "一个正方形", "strokes_max": 12, "tags": ["shape"] },
+    { "id": "triangle", "word": "triangle", "ipa": "/ˈtraɪæŋɡl/", "cn": "三角形", "syllables": 3, "say": "三个角、三条边，像小山", "draw": "一个等腰三角形", "strokes_max": 12, "tags": ["shape"] },
+    { "id": "star", "word": "star", "ipa": "/stɑː(r)/", "cn": "星形", "syllables": 1, "say": "五个角，晚上天上亮晶晶", "draw": "一个五角星轮廓", "strokes_max": 14, "tags": ["shape"] },
+    { "id": "heart", "word": "heart", "ipa": "/hɑːt/", "cn": "心形", "syllables": 1, "say": "像一颗爱心，送给喜欢的人", "draw": "一个心形轮廓", "strokes_max": 20, "tags": ["shape"] },
+    { "id": "rainbow", "word": "rainbow", "ipa": "/ˈreɪnbəʊ/", "cn": "彩虹", "syllables": 2, "say": "雨过天晴，天上弯弯的七彩桥", "draw": "3 到 4 道平行的同心弧", "strokes_max": 24, "tags": ["color", "nature"] }
+  ]
+}

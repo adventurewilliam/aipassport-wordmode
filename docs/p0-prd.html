@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>单词模式 P0 · 工程 PRD 与实现清单</title>
+<style>
+:root{
+  --paper:#fbfaf6; --ink:#202a33; --muted:#6c7885; --line:#d5dce2;
+  --orange:#e07a3f; --orange-soft:#fff4ea; --blue:#3b6ea5; --blue-soft:#eef4fb;
+  --green:#3f8f6b; --green-soft:#eaf6f0; --red:#c0503f; --red-soft:#fdf0ee;
+  --card:#ffffff; --code:#f4f6f8;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#eef1f3;color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+  line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 22px 70px}
+header.top{background:linear-gradient(135deg,#202a33,#2f4150);color:#fff;border-radius:18px;padding:30px 34px;box-shadow:0 8px 26px rgba(32,42,51,.18)}
+.kicker{font-size:12px;letter-spacing:.18em;color:#f0b387;font-weight:700;text-transform:uppercase}
+h1{font-size:30px;margin:10px 0 6px;letter-spacing:-.5px}
+.sub{color:#c4d0da;font-size:14.5px;margin:0}
+.metabar{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.metabar span{background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:5px 13px;font-size:12px;color:#e7eef4}
+.metabar span.hot{background:var(--orange);border-color:var(--orange);color:#fff;font-weight:700}
+section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 30px;margin-top:20px;box-shadow:0 2px 10px rgba(32,42,51,.04)}
+h2{font-size:20px;margin:0 0 16px;padding-bottom:11px;border-bottom:2px solid var(--ink);display:flex;align-items:center;gap:10px}
+h2 .n{display:inline-flex;width:27px;height:27px;border-radius:8px;background:var(--ink);color:#fff;font-size:13px;align-items:center;justify-content:center;flex:none}
+h3{font-size:15.5px;margin:22px 0 10px;color:var(--blue)}
+p{margin:9px 0}
+table{width:100%;border-collapse:collapse;font-size:13.4px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+th{background:#f5f7f9;font-weight:700;color:#3d4b57}
+tbody tr:nth-child(even){background:#fafbfc}
+code,pre,.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace}
+code{background:var(--code);padding:1.5px 5px;border-radius:4px;font-size:12.3px;color:#a33d2a}
+pre{background:#202a33;color:#e6edf3;border-radius:10px;padding:16px 18px;overflow-x:auto;font-size:12.3px;line-height:1.65}
+pre .c{color:#8fa3b5}
+pre .k{color:#f0b387}
+.tag{display:inline-block;font-size:11px;font-weight:700;border-radius:5px;padding:1px 7px;margin-right:5px;white-space:nowrap}
+.t-new{background:var(--green-soft);color:var(--green);border:1px solid #bfe3d0}
+.t-fix{background:var(--orange-soft);color:var(--orange);border:1px solid #f3c9ad}
+.t-keep{background:var(--blue-soft);color:var(--blue);border:1px solid #c2d8ef}
+.t-no{background:var(--red-soft);color:var(--red);border:1px solid #eec4bd}
+.callout{border-radius:11px;padding:15px 18px;margin:14px 0;font-size:13.6px;border-left:4px solid}
+.c-orange{background:var(--orange-soft);border-color:var(--orange)}
+.c-blue{background:var(--blue-soft);border-color:var(--blue)}
+.c-green{background:var(--green-soft);border-color:var(--green)}
+.c-red{background:var(--red-soft);border-color:var(--red)}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.box{border:1px solid var(--line);border-radius:11px;padding:14px 16px;background:#fcfdfd}
+.box b.t{display:block;font-size:13px;margin-bottom:6px;color:var(--blue)}
+.big{font-size:25px;font-weight:800;letter-spacing:-.5px}
+.unit{font-size:12px;color:var(--muted);font-weight:500}
+ul,ol{margin:9px 0;padding-left:22px}
+li{margin:5px 0;font-size:13.6px}
+.chk{list-style:none;padding-left:0}
+.chk li{padding-left:26px;position:relative}
+.chk li::before{content:"☐";position:absolute;left:0;color:var(--orange);font-size:16px}
+/* 线稿 */
+.phones{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:16px}
+.phone{background:#f4f6f7;border:1px solid var(--line);border-radius:13px;padding:12px;text-align:center}
+.phone svg{width:100%;max-width:208px;height:auto;display:block;margin:0 auto;border-radius:9px;background:#fff}
+.cap{font-size:12px;color:var(--muted);text-align:left;margin-top:9px;line-height:1.55}
+.cap b{color:var(--ink);font-size:12.6px}
+svg text{font-family:"PingFang SC","Microsoft YaHei",monospace}
+.tree{background:#202a33;color:#dbe6ef;border-radius:11px;padding:18px 20px;font-size:12.4px;line-height:1.75;overflow-x:auto}
+.tree .add{color:#7fd6a4;font-weight:700}
+.tree .mod{color:#f0b387;font-weight:700}
+.tree .dim{color:#7e93a6}
+.step{display:flex;gap:13px;align-items:flex-start;border-bottom:1px dashed var(--line);padding:9px 0}
+.step:last-child{border-bottom:0}
+.step .i{flex:none;width:25px;height:25px;border-radius:7px;background:var(--orange-soft);color:var(--orange);font-weight:800;font-size:12.5px;display:flex;align-items:center;justify-content:center}
+.step .tx{font-size:13.5px}
+footer{margin-top:26px;text-align:center;color:var(--muted);font-size:12px;line-height:1.8}
+@media(max-width:820px){.g2,.g3,.g4{grid-template-columns:1fr}section{padding:20px 18px}.wrap{padding:16px 12px 50px}h1{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="kicker">Engineering PRD · P0 Offline Fallback</div>
+  <h1>小朋友单词模式 · P0 实现清单</h1>
+  <p class="sub">AI Passport 小智移植版 · 纯离线 10 词 · 7 屏 · 三键定型 —— 一份能直接投喂给 AI 编程工具去落地的工程规格</p>
+  <div class="metabar">
+    <span class="hot">C1 已按建议定稿：长按 OK 呼菜单</span>
+    <span class="hot">方案 A 已落地 · 音标不做 · 词表零改动</span>
+    <span>基线 2.1.0-xiaozhi.18 · ESP-IDF 5.5.3</span>
+    <span>ESP32-C3 · 8 MB Flash · 无 PSRAM</span>
+    <span>LVGL 9.5 · 内存池 40 KiB</span>
+    <span>2026-11-09</span>
+    <span>配套 wordmode-plan.html v0.3.1</span>
+  </div>
+</header>
+
+<!-- 0 校订 -->
+<section>
+<h2><span class="n">0</span>与 v0.3 方案稿的 3 项校订 <span class="tag t-fix">先读这节</span></h2>
+<p>方案稿 v0.3 是在<strong>尚未取得底层仓库源码</strong>时基于调研推断写的。本次浅克隆并读取 <code>doc/ARCHITECTURE.md</code>、<code>XIAOZHI_BUILD.txt</code>、<code>partitions.csv</code> 与各 HAL 头文件后，发现 3 处必须校正。<strong>你已拍板的产品决策一个不改</strong>：UP/DOWN 直选、按钮缩小、单词模式菜单置顶、进出两步、孩子不进菜单。校正的只是实现落点。</p>
+<table>
+<thead><tr><th style="width:52px">编号</th><th>v0.3 假设</th><th>真实仓库</th><th>P0 处理</th></tr></thead>
+<tbody>
+<tr><td><b>C1</b></td><td>长按 <b>DOWN</b> 3 秒呼出菜单；长按 <b>OK</b> = 问小智</td><td><code>XIAOZHI_BUILD.txt</code> 第 4 条：<b>「对话页长按确认打开菜单」</b>；现有菜单 7 项、五行窗口滚动</td><td><span class="tag t-fix">校正</span>统一复用「长按 OK 呼出菜单」，零新增按键逻辑</td></tr>
+<tr><td><b>C2</b></td><td>在 <code>main/</code> 下新增 6 个文件</td><td>真实为<b>端口-适配器六边形</b>：<code>core/{ports,services}</code>、<code>ui/presentation</code>、<code>platform/xiaozhi</code>、<code>app</code>；<code>main/main.c</code> 只有 <code>app_run()</code></td><td><span class="tag t-fix">校正</span>状态机→services，页面→presentation，编排→app</td></tr>
+<tr><td><b>C3</b></td><td>需自建 Opus 解码；未指定 Flash 落位</td><td>仓库<b>自带 ADP1 容器 + <code>adpcm_decode()</code> + <code>audio_service_play()</code></b>；<code>audio</code> 分区 512 KiB</td><td><span class="tag t-new">利好</span>发音包已按 ADP1 生成，直接复用现成解码器</td></tr>
+</tbody></table>
+<div class="callout c-blue"><b>另两条是补充、不是冲突：</b>LVGL 内存池已固定 <code>CONFIG_LV_MEM_SIZE_KILOBYTES=40</code>，架构文档记载「无 PSRAM，堆曾观测低至约 1KB」——比方案稿估算更紧，故 §3 重做了内存预算；屏幕物理 240×320，仓库规格按「240×296 可用区 + 24px 状态栏」布局，P0 沿用。</div>
+
+<h3>C1 详解：把两个长按键合并成一个</h3>
+<div class="grid g2">
+<div class="box"><b class="t">问题</b><p style="font-size:13.4px;margin:0">v0.3 有两个长按键（DOWN 长按=菜单、OK 长按=问小智），而真实固件<b>已把「长按 OK」用作全局菜单入口</b>。照搬会让一个键同时承担三件事，孩子和家长都会混。</p></div>
+<div class="box"><b class="t">P0 建议</b><p style="font-size:13.4px;margin:0">全机只用<b>一个长按键心智</b>：长按 OK 呼出菜单。v0.3 的「动态首项」优化恰好承接「问小智 / 退出」语义；P0 不碰在线链路也能闭环。</p></div>
+</div>
+<table>
+<thead><tr><th>动作</th><th>v0.3</th><th>P0 校订后</th></tr></thead>
+<tbody>
+<tr><td>呼出菜单</td><td>DOWN 长按 3 秒</td><td><b>OK 长按</b>（复用现成）</td></tr>
+<tr><td>对话态菜单首项</td><td>单词模式（置顶、默认高亮）</td><td><span class="tag t-keep">不变</span></td></tr>
+<tr><td>单词模式菜单首项</td><td>返回小智（动态替换）</td><td><span class="tag t-keep">不变</span>并去掉原末项「返回」，保持 7 项</td></tr>
+<tr><td>问小智</td><td>OK 长按直接切</td><td>长按 OK → OK（首项）→ 回对话页口头问；P1 再做「讲完自动回」</td></tr>
+<tr><td>进 / 出单词模式</td><td>两步</td><td><b>仍两步、完全对称</b>（长按 OK + OK）</td></tr>
+</tbody></table>
+<div class="callout c-orange"><b>代价与回退：</b>「问小智」多一步、且不会自动回单词模式（用 NVS 记住进度，回来接着那个词）。<b>若想保留 v0.3 原样</b>，只需在 <code>app.c</code> 的 <code>on_button</code> 里把 <code>HAL_BTN_LONG</code> 的 <code>index==2</code> 改判 <code>index==1</code>，并给 OK 长按单独开分支，其余文件不动。建议真机上让小朋友试过再定。</div>
+</section>
+
+<!-- 1 目标 -->
+<section>
+<h2><span class="n">1</span>目标与验收标准</h2>
+<table>
+<thead><tr><th style="width:110px">项</th><th>要求</th></tr></thead>
+<tbody>
+<tr><td><b>离线闭环</b></td><td>不连 Wi-Fi、不连 NAS、不连小智服务端也能跑通 7 屏</td></tr>
+<tr><td><b>词量</b></td><td>内置 <b>10 词</b>：<code>apple banana cat fish sun star milk eye tree car</code>，跨 6 单元抽样，每词一张线图 + 正常/慢速两版发音</td></tr>
+<tr><td><b>认知负荷</b></td><td>孩子不识字：屏幕<b>不出现</b> <code>word / cn / ipa / say</code> 任何文本，只靠图案、线图、声音</td></tr>
+<tr><td><b>按钮尺寸</b></td><td>两个图案各 <b>84×52</b>，合计约屏 <b>11%</b>（&lt; 1/4），线图区放大到约 <b>160×160</b></td></tr>
+<tr><td><b>正反馈</b></td><td>「认识 / 读对了」只给正反馈；「不记得」<b>刻意不设计任何失败符号</b>，只给耳朵 + 循环箭头 + 慢速重播</td></tr>
+<tr><td><b>资源纪律</b></td><td>不新增全屏位图、不新增 LVGL canvas 缓冲、不引入新解码器；新增 SRAM 峰值 <b>≤ 2 KiB</b></td></tr>
+<tr><td><b>互斥</b></td><td>单词模式与小智对话态并列互斥；进入前释放语音资源，退出后恢复</td></tr>
+<tr><td><b>可回溯</b></td><td>词序进度写入 NVS，断电/退出后回来接着当前词</td></tr>
+</tbody></table>
+<div class="grid g2">
+<div><h3>P0 验收清单</h3><ul class="chk">
+<li>冷启动 → 长按 OK → 首项高亮「单词模式」→ OK 进入主屏</li>
+<li>主屏线图可辨认、两图案各 ≤ 1/4 屏、无文字</li>
+<li>UP → 认识反馈 → 1.5 s 自动下一词</li>
+<li>DOWN → 不记得反馈 → 慢速重播 → 回主屏</li>
+<li>OK 短按重播；长按 OK → 首项「返回小智」→ 回对话页</li>
+<li>退出再进入，停在同一词</li>
+</ul></div>
+<div><h3>工程验收清单</h3><ul class="chk">
+<li>全程断开路由器也能玩</li>
+<li><code>idf.py build</code> + 仓库全量契约/host 测试全绿</li>
+<li><code>idf.py size</code> 确认 app 余量 &gt; 320 KiB</li>
+<li>打印进入/退出 <code>heap_caps_get_free_size()</code> 基线</li>
+<li>连续按 100 次无重启、无 <code>task_wdt</code></li>
+<li><b>让 6 岁小朋友实按</b>，确认缩小后的图案仍认得出</li>
+</ul></div>
+</div>
+</section>
+
+<!-- 2 分层 -->
+<section>
+<h2><span class="n">2</span>分层落位（按真实仓库结构）</h2>
+<div class="callout c-blue"><b>铁律（架构文档 §2）：</b>所有箭头指向 <code>ports</code>（命名空间 <code>hal/</code>）。<code>services</code> 纯 C、不含 ESP-IDF / LVGL 头、可在 PC 上单测；<code>presentation</code> 是唯一出现 <code>lvgl.h</code> 的业务组件。</div>
+<div class="tree"><span class="dim">components/</span>
+├── <span class="dim">core/</span>
+│   ├── <span class="dim">ports/include/hal/</span>          <span class="dim"># 只读：hal_button / hal_kv / hal_display / hal_audio</span>
+│   └── <span class="dim">services/</span>
+│       ├── include/services/   <span class="add">+ word_mode.h</span>      <span class="dim"># 状态机/词序/按键语义（纯 C）</span>
+│       ├── src/                <span class="add">+ word_mode.c</span>      <span class="dim"># 可 PC 单测</span>
+│       └── CMakeLists.txt      <span class="mod">~ 加入 word_mode.c</span>
+├── <span class="dim">ui/presentation/</span>
+│   ├── include/presentation/
+│   │   ├── ui_plays.h          <span class="mod">~ ui_play_id_t 加 UI_PLAY_WORDMODE（首位）</span>
+│   │   └── <span class="add">ui_wordmode.h</span>       <span class="dim"># 页面接口</span>
+│   ├── src/
+│   │   ├── ui_plays.c          <span class="mod">~ 菜单首项 + 动态首项替换</span>
+│   │   └── <span class="add">ui_wordmode.c</span>       <span class="dim"># 7 屏绘制 + 笔画直绘 + ADP1 流式播放</span>
+│   └── CMakeLists.txt          <span class="mod">~ 加入 ui_wordmode.c</span>
+├── <span class="dim">platform/xiaozhi/</span>        <span class="dim"># 不改，只调用 xiaozhi_stop / resume</span>
+└── <span class="dim">app/</span>
+    ├── include/app/app_plays.h <span class="mod">~ 加 3 个入口</span>
+    ├── src/
+    │   ├── app.c               <span class="mod">~ 注册 select 分支 + 菜单触发（C1）</span>
+    │   ├── app_plays.c         <span class="mod">~ 模式切换 + 资源交接 + 按键转发</span>
+    │   └── assets/             <span class="add">+ p0_pack.h / p0_audio.h</span>
+    └── test/                   <span class="add">+ test_wordmode_contract.py</span>
+<span class="dim">tools/</span>                       <span class="add">+ gen_lineart.py / gen_audio.py / gen_adpcm.py</span></div>
+<p style="font-size:13px;color:var(--muted)"><b>明确不改：</b><code>components/core/ports/</code>、<code>components/platform/xiaozhi/</code>、<code>partitions.csv</code>（方案 A 下）、<code>sdkconfig.defaults</code>（40 KiB 池不动）、<code>main/main.c</code>。本仓库<strong>不存在 <code>components/bsp</code> 目录</strong>。</p>
+</section>
+
+<!-- 3 数据 -->
+<section>
+<h2><span class="n">3</span>数据格式与内存预算</h2>
+<div class="grid g2">
+<div class="box"><b class="t">线图 · p0_pack.h（775 B）</b>
+<p style="font-size:13px;margin:4px 0"><code>magic(2B 'WL') + stroke_count(1B) + n×5B</code><br>每笔 <code>[opcode, x1,y1,x2,y2]</code>，坐标 0..200<br>opcode：<code>1=LINE 2=CIRCLE 3=RECT 4=DOT</code></p>
+<p style="font-size:12.6px;color:var(--muted);margin:6px 0 0">映射 <code>sx = 40 + x*0.8</code>，<code>sy = 40 + y*0.8</code>，深墨 #202a33 / 线宽 3px。</p></div>
+<div class="box"><b class="t">发音 · p0_audio.h（280.0 KiB）</b>
+<p style="font-size:13px;margin:4px 0">完全对齐现成 <code>services/audio_clip.h</code>：<br><code>magic 0x31504441 "ADP1" + rate(2) + ch(1) + rsv(1) + num_samples(4)</code> = 12 B 头，其后 IMA-ADPCM nibble 流。</p>
+<p style="font-size:12.6px;color:var(--muted);margin:6px 0 0">16 kHz / mono / 每字节 2 样本（低 nibble 在前）；每词 normal + slow 两版。</p></div>
+</div>
+<div class="callout c-red"><b>内存关键 · 不要用 <code>lv_canvas</code>：</b>160×160×2 ≈ 51 KiB，会压垮 40 KiB 的 LVGL 池。改为自定义 <code>lv_obj</code> + <code>LV_EVENT_DRAW_MAIN</code> 回调里用 <code>lv_draw_line()</code> / <code>lv_draw_arc()</code> <b>逐笔直绘</b>，描述符放栈，<b>零中间帧缓冲</b>。曲线已用折线近似。</div>
+
+<h3>Flash 落位</h3>
+<table><thead><tr><th></th><th>方案 A（P0 推荐）</th><th>方案 B（余量不足时）</th></tr></thead><tbody>
+<tr><td><b>做法</b></td><td><code>static const</code> 编进 <code>.rodata</code>，Flash XIP 映射、<b>零 SRAM</b></td><td>ADP1 打成 <code>words.bin</code> 刷分区，<code>esp_partition_mmap</code> 零拷贝读</td></tr>
+<tr><td><b>分区改动</b></td><td>无</td><td>需改 <code>partitions.csv</code> + <code>release.py</code> 六段镜像校验</td></tr>
+<tr><td><b>代价</b></td><td>占 app 分区（3 MiB）约 285 KiB</td><td>多一个镜像段、刷机步骤变多</td></tr>
+<tr><td><b>前提</b></td><td><code>idf.py size</code> 确认余量 &gt; 320 KiB</td><td>—</td></tr>
+</tbody></table>
+<p style="font-size:13px;color:var(--muted)"><code>audio</code> 分区 <code>0x37a000, 0x80000</code>（512 KiB）现有余量约 227 KiB，<b>装不下</b> 280 KiB 完整发音包，故方案 B 需扩分区或降采样到 8 kHz。P0 先走 A，「换发音不重编译应用」留到 P1。</p>
+
+<h3>内存预算（按「堆曾低至 1KB」重做）</h3>
+<div class="grid g4">
+<div class="box"><div class="big">0 <span class="unit">B</span></div><div style="font-size:12.5px;color:var(--muted)">线图 775 B<br>.rodata / Flash XIP</div></div>
+<div class="box"><div class="big">0 <span class="unit">B</span></div><div style="font-size:12.5px;color:var(--muted)">ADP1 287 KB<br>.rodata / Flash XIP</div></div>
+<div class="box"><div class="big">1.0 <span class="unit">KiB</span></div><div style="font-size:12.5px;color:var(--muted)">解码块 256B<br>→ PCM 512×int16（静态全局）</div></div>
+<div class="box" style="background:var(--green-soft);border-color:#bfe3d0"><div class="big" style="color:var(--green)">≈1.2 <span class="unit">KiB</span></div><div style="font-size:12.5px;color:var(--muted)"><b>新增 SRAM 峰值</b><br>含状态机 / 绘制描述符</div></div>
+</div>
+<div class="callout c-green"><b>交接纪律比数字更重要：</b>进入单词模式前调 <code>xiaozhi_stop()</code>，等 <code>xiaozhi_stopped()</code> 为真（该版本结束语音后会释放编解码器、麦克风、语音套接字与 TLS 客户端，仅保留 Wi-Fi 与形象），<b>腾出的堆远大于新增的 1.2 KiB</b>；退出时 <code>xiaozhi_resume()</code>。两种模式绝不共存。</div>
+</section>
+
+<!-- 4 七屏 -->
+<section>
+<h2><span class="n">4</span>页面线稿（7 屏 + 菜单 2 态 = 8 张 · 240×320 竖屏）</h2>
+<p style="font-size:13.4px;color:var(--muted)">沿用仓库「深蓝黑 / 暖杏焦点、圆角外黑」的小智视觉语言；单词模式内部改用<b>纸白底 + 深墨</b>，与对话态形成「切换到学习」的直觉区分。每屏切换只 <code>lv_obj_delete_async(old)</code> + 建新对象，不做整页动画。<b>②′ 是 ② 在单词模式内的「动态首项」状态，不额外算一屏</b>，故共 7 个页面、8 张线稿。</p>
+<div class="phones">
+
+<!-- ① -->
+<div class="phone">
+<svg viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="236" height="316" rx="20" fill="#202a33" stroke="#0f161d" stroke-width="2.5"/>
+<rect x="16" y="14" width="208" height="24" rx="8" fill="#2c3b49"/>
+<circle cx="30" cy="26" r="4" fill="#7fd6a4"/><text x="42" y="30" font-size="10" fill="#9fb2c1">小智 · 在线</text>
+<text x="216" y="30" font-size="10" text-anchor="end" fill="#9fb2c1">82%</text>
+<circle cx="120" cy="152" r="70" fill="#f0b387" opacity=".14"/>
+<circle cx="120" cy="146" r="54" fill="#f4c9a5"/>
+<circle cx="102" cy="138" r="6" fill="#202a33"/><circle cx="138" cy="138" r="6" fill="#202a33"/>
+<path d="M104 168 Q120 182 136 168" stroke="#202a33" stroke-width="4" fill="none" stroke-linecap="round"/>
+<circle cx="84" cy="158" r="8" fill="#e07a3f" opacity=".35"/><circle cx="156" cy="158" r="8" fill="#e07a3f" opacity=".35"/>
+<rect x="46" y="238" width="148" height="30" rx="15" fill="#2c3b49"/>
+<text x="120" y="258" font-size="11" text-anchor="middle" fill="#e7eef4">按 OK 说话</text>
+<text x="120" y="292" font-size="9.5" text-anchor="middle" fill="#8095a6">长按 OK 呼出菜单</text>
+</svg>
+<div class="cap"><b>① 日常小智界面</b> <span class="tag t-keep">原样</span> 深色圆角、动态形象、声音驱动嘴型、CW2017 电量条。<b>OK 长按 = 呼出菜单</b>（C1）。</div>
+</div>
+
+<!-- ② -->
+<div class="phone">
+<svg viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="236" height="316" rx="20" fill="#fbfaf6" stroke="#202a33" stroke-width="2.5"/>
+<text x="22" y="34" font-size="13" font-weight="700" fill="#202a33">菜单</text>
+<line x1="18" y1="44" x2="222" y2="44" stroke="#d5dce2"/>
+<rect x="14" y="54" width="212" height="32" rx="8" fill="#fff4ea" stroke="#e07a3f" stroke-width="2.2"/>
+<circle cx="30" cy="70" r="7" fill="none" stroke="#e07a3f" stroke-width="2"/><path d="M30 65 L30 70 L33 72" stroke="#e07a3f" stroke-width="1.6" fill="none"/>
+<text x="46" y="75" font-size="11.5" font-weight="700" fill="#e07a3f">单词模式</text>
+<text x="216" y="75" font-size="8.5" text-anchor="end" fill="#e07a3f">默认高亮</text>
+<g font-size="11" fill="#6c7885">
+<text x="24" y="107">重新配网</text><text x="24" y="133">调整音量</text><text x="24" y="159">打断方式</text><text x="24" y="185">智能体设置</text><text x="24" y="211">屏幕亮度</text><text x="24" y="237">休眠时间</text>
+</g>
+<line x1="18" y1="252" x2="222" y2="252" stroke="#d5dce2" stroke-dasharray="4 5"/>
+<text x="22" y="272" font-size="10.5" fill="#9aa7b2">返回</text>
+<text x="120" y="298" font-size="9" text-anchor="middle" fill="#9aa7b2">UP/DOWN 选择 · OK 确认</text>
+</svg>
+<div class="cap"><b>② 右侧菜单（对话态）</b> <span class="tag t-keep">置顶</span> 「单词模式」<b>第 1 项且默认高亮</b>，呼出后按一下 OK 即进入。菜单给家长用、可带文字。</div>
+</div>
+
+<!-- ②' -->
+<div class="phone">
+<svg viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="236" height="316" rx="20" fill="#fbfaf6" stroke="#202a33" stroke-width="2.5"/>
+<text x="22" y="34" font-size="13" font-weight="700" fill="#202a33">菜单</text>
+<line x1="18" y1="44" x2="222" y2="44" stroke="#d5dce2"/>
+<rect x="14" y="54" width="212" height="32" rx="8" fill="#eef4fb" stroke="#3b6ea5" stroke-width="2.2"/>
+<path d="M30 70 L24 70 M30 70 L27 66 M30 70 L27 74" stroke="#3b6ea5" stroke-width="2" fill="none" stroke-linecap="round"/>
+<text x="46" y="75" font-size="11.5" font-weight="700" fill="#3b6ea5">返回小智</text>
+<text x="216" y="75" font-size="8.5" text-anchor="end" fill="#3b6ea5">动态首项</text>
+<g font-size="11" fill="#6c7885">
+<text x="24" y="107">重新配网</text><text x="24" y="133">调整音量</text><text x="24" y="159">打断方式</text><text x="24" y="185">智能体设置</text><text x="24" y="211">屏幕亮度</text><text x="24" y="237">休眠时间</text>
+</g>
+<line x1="18" y1="252" x2="222" y2="252" stroke="#d5dce2" stroke-dasharray="4 5"/>
+<text x="22" y="272" font-size="10" fill="#c9d1d9" text-decoration="line-through">返回</text>
+<text x="120" y="298" font-size="9" text-anchor="middle" fill="#9aa7b2">去掉原末项，保持 7 项 / 五行窗口</text>
+</svg>
+<div class="cap"><b>②′ 右侧菜单（单词模式内）</b> <span class="tag t-keep">动态首项</span> 首项换成「返回小智」，并隐藏原末项「返回」，进/出完全对称。</div>
+</div>
+
+<!-- ③ -->
+<div class="phone">
+<svg viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="236" height="316" rx="20" fill="#fbfaf6" stroke="#202a33" stroke-width="2.5"/>
+<rect x="16" y="12" width="208" height="18" rx="6" fill="#eef1f3"/>
+<circle cx="28" cy="21" r="3.5" fill="#7fd6a4"/><text x="40" y="24.5" font-size="8.5" fill="#8a97a3">学习中</text>
+<rect x="40" y="40" width="160" height="160" rx="12" fill="#fff" stroke="#e6ebef"/>
+<!-- apple 简笔 -->
+<path d="M100 78 Q120 66 140 78 Q158 92 156 122 Q154 152 120 158 Q86 152 84 122 Q82 92 100 78 Z" fill="none" stroke="#202a33" stroke-width="3"/>
+<path d="M120 78 L120 62" stroke="#202a33" stroke-width="3" stroke-linecap="round"/>
+<path d="M120 68 Q136 56 146 64 Q136 76 120 68 Z" fill="none" stroke="#202a33" stroke-width="2.5"/>
+<!-- 两个按钮 84x52 -->
+<rect x="24" y="232" width="84" height="52" rx="12" fill="#eaf6f0" stroke="#3f8f6b" stroke-width="2.4"/>
+<g transform="translate(66,258) scale(0.9)" fill="none" stroke="#3f8f6b" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+<path d="M-9 2 L-9 -8 Q-9 -11 -6 -11 L-3 -11 L-3 1 L3 1 L3 -7 Q3 -9 5 -9 Q7 -9 7 -7 L7 1 L10 1 L10 -5 Q10 -7 12 -7 Q14 -7 14 -5 L14 6 Q14 12 8 12 L-4 12 Q-9 12 -9 6 Z"/></g>
+<text x="66" y="280" font-size="9" text-anchor="middle" fill="#3f8f6b">UP 认识</text>
+<rect x="132" y="232" width="84" height="52" rx="12" fill="#fff4ea" stroke="#e07a3f" stroke-width="2.4"/>
+<text x="174" y="264" font-size="30" text-anchor="middle" fill="#e07a3f" font-weight="700">?</text>
+<text x="174" y="280" font-size="9" text-anchor="middle" fill="#e07a3f">DOWN 不记得</text>
+<text x="120" y="304" font-size="8.5" text-anchor="middle" fill="#9aa7b2">OK 短按再听 · 长按 OK 菜单</text>
+</svg>
+<div class="cap"><b>③ 看图 + 二选一（主屏）</b> <span class="tag t-new">重画</span> 线图约 160×160；两图案各 <b>84×52</b>、合计约屏 11%。<b>屏幕上无任何文字</b>。</div>
+</div>
+
+<!-- ④ -->
+<div class="phone">
+<svg viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="236" height="316" rx="20" fill="#fbfaf6" stroke="#202a33" stroke-width="2.5"/>
+<rect x="16" y="12" width="208" height="18" rx="6" fill="#eef1f3"/><text x="28" y="24.5" font-size="8.5" fill="#8a97a3">跟着念一念</text>
+<circle cx="120" cy="152" r="66" fill="#fff4ea" stroke="#f3c9ad" stroke-width="2"/>
+<rect x="106" y="112" width="28" height="48" rx="14" fill="none" stroke="#e07a3f" stroke-width="3.5"/>
+<path d="M96 158 Q120 182 144 158" fill="none" stroke="#e07a3f" stroke-width="3.5" stroke-linecap="round"/>
+<path d="M120 176 L120 188" stroke="#e07a3f" stroke-width="3.5" stroke-linecap="round"/>
+<g stroke="#f0b387" stroke-width="3" fill="none" stroke-linecap="round">
+<path d="M74 132 Q66 152 74 172"/><path d="M64 124 Q52 152 64 180"/>
+<path d="M166 132 Q174 152 166 172"/><path d="M176 124 Q188 152 176 180"/></g>
+<rect x="60" y="238" width="120" height="30" rx="15" fill="#eef1f3"/>
+<text x="120" y="258" font-size="10.5" text-anchor="middle" fill="#6c7885">OK 跳过</text>
+<text x="120" y="292" font-size="9" text-anchor="middle" fill="#9aa7b2">P0 占位：不采音、不评测</text>
+</svg>
+<div class="cap"><b>④ 跟读（P0 占位）</b> <span class="tag t-no">简化</span> 仅提示可以跟着念。跟读评测（ASR 字幕比对）属 <b>P2</b>，依赖在线服务。</div>
+</div>
+
+<!-- ⑤ -->
+<div class="phone">
+<svg viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="236" height="316" rx="20" fill="#fbfaf6" stroke="#202a33" stroke-width="2.5"/>
+<circle cx="120" cy="150" r="82" fill="#eaf6f0"/>
+<g transform="translate(120,148) scale(2.5)" fill="none" stroke="#3f8f6b" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+<path d="M-9 2 L-9 -8 Q-9 -11 -6 -11 L-3 -11 L-3 1 L3 1 L3 -7 Q3 -9 5 -9 Q7 -9 7 -7 L7 1 L10 1 L10 -5 Q10 -7 12 -7 Q14 -7 14 -5 L14 6 Q14 12 8 12 L-4 12 Q-9 12 -9 6 Z"/></g>
+<g fill="#e6a63f">
+<path d="M52 84 l4 9 10 1 -7 7 2 10 -9 -5 -9 5 2 -10 -7 -7 10 -1 z"/>
+<path d="M188 96 l3 7 8 1 -6 5 2 8 -7 -4 -7 4 2 -8 -6 -5 8 -1 z"/>
+<path d="M176 210 l3 7 8 1 -6 5 2 8 -7 -4 -7 4 2 -8 -6 -5 8 -1 z"/></g>
+<text x="120" y="264" font-size="12" text-anchor="middle" fill="#3f8f6b" font-weight="700">1.5 秒后自动下一个</text>
+<text x="120" y="290" font-size="9" text-anchor="middle" fill="#9aa7b2">任意键立即跳过 · 无失败符号</text>
+</svg>
+<div class="cap"><b>⑤ 读对了 / 认识</b> <span class="tag t-keep">只给正反馈</span> 大拇哥 + 星星，暖杏高亮，1.5 s 自动进下一词，不需要孩子操作。</div>
+</div>
+
+<!-- ⑥ -->
+<div class="phone">
+<svg viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="236" height="316" rx="20" fill="#fbfaf6" stroke="#202a33" stroke-width="2.5"/>
+<circle cx="120" cy="150" r="82" fill="#fff4ea"/>
+<path d="M92 118 Q72 118 72 146 Q72 168 96 174 L100 190 L116 186 L116 130 Z" fill="none" stroke="#e07a3f" stroke-width="3.4" stroke-linejoin="round"/>
+<path d="M100 138 Q88 138 88 150 Q88 160 100 162" fill="none" stroke="#e07a3f" stroke-width="2.6"/>
+<path d="M150 118 A44 44 0 1 1 150 182" fill="none" stroke="#3b6ea5" stroke-width="3.4" stroke-linecap="round"/>
+<path d="M150 106 L150 122 M150 122 L140 114" fill="none" stroke="#3b6ea5" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M136 146 L150 138 L150 162 L136 154 Z" fill="none" stroke="#3b6ea5" stroke-width="2.8" stroke-linejoin="round"/>
+<path d="M158 142 Q168 150 158 158" fill="none" stroke="#3b6ea5" stroke-width="2.6" stroke-linecap="round"/>
+<text x="120" y="264" font-size="11.5" text-anchor="middle" fill="#e07a3f" font-weight="700">再听一次，慢慢来</text>
+<text x="120" y="290" font-size="9" text-anchor="middle" fill="#9aa7b2">自动播放慢速发音 · 刻意不设计失败符号</text>
+</svg>
+<div class="cap"><b>⑥ 没读对 / 不记得</b> <span class="tag t-keep">零挫败</span> 耳朵 + 循环箭头 + 喇叭，播 <code>*_slow.adp1</code> 后回主屏；OK 短按可再听一次。</div>
+</div>
+
+<!-- ⑦ -->
+<div class="phone">
+<svg viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="236" height="316" rx="20" fill="#202a33" stroke="#0f161d" stroke-width="2.5"/>
+<rect x="16" y="14" width="208" height="24" rx="8" fill="#2c3b49"/>
+<circle cx="30" cy="26" r="4" fill="#7fd6a4"/><text x="42" y="30" font-size="10" fill="#9fb2c1">小智 · 在线</text>
+<rect x="188" y="18" width="30" height="16" rx="4" fill="#3c4d5c"/>
+<text x="203" y="29.5" font-size="8" text-anchor="middle" fill="#f0b387">apple</text>
+<circle cx="120" cy="152" r="66" fill="#f0b387" opacity=".14"/>
+<circle cx="120" cy="146" r="52" fill="#f4c9a5"/>
+<circle cx="102" cy="138" r="6" fill="#202a33"/><circle cx="138" cy="138" r="6" fill="#202a33"/>
+<path d="M104 166 Q120 184 136 166" stroke="#202a33" stroke-width="4" fill="none" stroke-linecap="round"/>
+<text x="120" y="248" font-size="11" text-anchor="middle" fill="#e7eef4">可以直接问小智</text>
+<text x="120" y="288" font-size="9" text-anchor="middle" fill="#8095a6">P0：回对话页口头问 · 进度已存 NVS</text>
+</svg>
+<div class="cap"><b>⑦ 问小智（P0 = 返回对话态）</b> <span class="tag t-no">降级</span> 顶部缩略给家长看。「讲完自动回」属 P1/P2；P0 用 NVS 记住 <code>wordmode:index</code>，回来接着当前词。</div>
+</div>
+
+</div>
+</section>
+
+<!-- 5 状态机 -->
+<section>
+<h2><span class="n">5</span>状态机</h2>
+<div class="grid g2">
+<div class="box"><b class="t">顶层（app 层持有，互斥）</b>
+<svg viewBox="0 0 480 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+<rect x="18" y="60" width="130" height="58" rx="12" fill="#202a33"/><text x="83" y="94" font-size="14" fill="#fff" text-anchor="middle" font-weight="700">小智对话</text>
+<rect x="332" y="60" width="130" height="58" rx="12" fill="#fff4ea" stroke="#e07a3f" stroke-width="2.4"/><text x="397" y="94" font-size="14" fill="#e07a3f" text-anchor="middle" font-weight="700">单词模式</text>
+<path d="M148 76 L328 76" stroke="#3f8f6b" stroke-width="2.4" marker-end="url(#a)"/>
+<text x="238" y="68" font-size="10.5" fill="#3f8f6b" text-anchor="middle">长按 OK→菜单→OK</text>
+<text x="238" y="88" font-size="9.5" fill="#6c7885" text-anchor="middle">xiaozhi_stop() → 等 stopped()</text>
+<path d="M328 108 L148 108" stroke="#3b6ea5" stroke-width="2.4" marker-end="url(#b)"/>
+<text x="238" y="126" font-size="10.5" fill="#3b6ea5" text-anchor="middle">长按 OK→菜单②′→OK</text>
+<text x="238" y="145" font-size="9.5" fill="#6c7885" text-anchor="middle">ui_wordmode_close() → xiaozhi_resume()</text>
+<defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#3f8f6b"/></marker>
+<marker id="b" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#3b6ea5"/></marker></defs>
+</svg>
+<p style="font-size:12.5px;color:var(--muted)">不变量：任一时刻只有一个模式持有 <code>hal_audio_t</code>；切换必须等上一方 <code>*_stopped()</code> / <code>*_close()</code> 完成。</p></div>
+<div class="box"><b class="t">单词模式内部（services/word_mode.c，纯 C）</b>
+<pre style="margin:8px 0 0;font-size:11.5px"><span class="c">IDLE ─open─▶ SHOW(③)</span>
+  SHOW ──UP──────▶ KNOWN(⑤) ─1.5s─▶ NEXT ─▶ SHOW
+   │  ──DOWN─────▶ UNKNOWN(⑥) ─播完─▶ SHOW
+   │  ──OK短按───▶ REPLAY(normal) ─▶ SHOW
+   └──OK长按─────▶ MENU_REQUEST ─▶ 退出
+ 每次进 SHOW：index=(index+1)%10
+              hal_kv_set("wordmode:index",…)</pre>
+<p style="font-size:12.5px;color:var(--muted);margin-top:8px"><b>不 include 任何 LVGL / IDF 头</b>，只输出 <code>word_action_t</code> 给上层，便于 PC 单测覆盖全部转移。</p></div>
+</div>
+</section>
+
+<!-- 6 按键 -->
+<section>
+<h2><span class="n">6</span>按键与导航</h2>
+<pre style="font-size:12px"><span class="c">/* components/core/ports/include/hal/hal_button.h（真实） */</span>
+<span class="k">typedef enum</span> { HAL_BTN_CLICK, HAL_BTN_DOUBLE, HAL_BTN_LONG,
+                   HAL_BTN_PRESS, HAL_BTN_RELEASE } hal_btn_event_t;
+<span class="k">typedef void</span> (*hal_btn_cb_t)(<span class="k">int</span> index, hal_btn_event_t e, <span class="k">void</span> *user);
+<span class="c">/* index: 0=UP  1=DOWN  2=OK（与 platform_lvgl_attach_buttons 的 prev/next/enter 一致） */</span></pre>
+<table><thead><tr><th>模式</th><th>按键</th><th>语义</th></tr></thead><tbody>
+<tr><td>对话态 ①</td><td>OK 短按</td><td>开始 / 结束对话（原固件）</td></tr>
+<tr><td>对话态 ①</td><td><b>OK 长按</b></td><td><b>呼出菜单 ②</b>（复用现成，C1）</td></tr>
+<tr><td>菜单 ②/②′</td><td>UP / DOWN 短按</td><td>上 / 下移焦点</td></tr>
+<tr><td>菜单 ②/②′</td><td>OK 短按</td><td>执行当前项</td></tr>
+<tr><td>单词模式</td><td><b>UP 短按</b></td><td><b>认识（拇指）</b></td></tr>
+<tr><td>单词模式</td><td><b>DOWN 短按</b></td><td><b>不记得（问号）</b></td></tr>
+<tr><td>单词模式</td><td>OK 短按</td><td>再听 / 结束跟读 / 跳过结果</td></tr>
+<tr><td>单词模式</td><td><b>OK 长按</b></td><td><b>呼出菜单 ②′ → 返回小智</b></td></tr>
+</tbody></table>
+<div class="callout c-blue"><b>事件选择：</b><code>HAL_BTN_PRESS</code> 是「按下即触发、低延迟」，<code>HAL_BTN_CLICK</code> 有约 180 ms 去双击窗口。<b>图案反应用 PRESS 求跟手，菜单执行用 CLICK 避免误触</b>；长按后的松手不得再触发第二次操作（<code>XIAOZHI_BUILD.txt</code> 第 6 条既有约束，沿用 <code>app_plays_button()</code> 裸手势转发）。孩子平时只碰短按，永远不进菜单、不选单元、不看文字。</div>
+</section>
+
+<!-- 7 接口 -->
+<section>
+<h2><span class="n">7</span>接口改动（真实签名）</h2>
+<div class="grid g2">
+<div><h3>新增 · <code>services/word_mode.h</code></h3>
+<pre style="font-size:11.6px"><span class="k">typedef enum</span> { WM_ACT_NONE, WM_ACT_SHOW,
+  WM_ACT_REPLAY, WM_ACT_SLOW, WM_ACT_KNOWN,
+  WM_ACT_UNKNOWN, WM_ACT_NEXT,
+  WM_ACT_MENU_REQUEST } word_action_t;
+<span class="k">void</span> word_mode_init(<span class="k">int</span> n, <span class="k">int</span> saved_index);
+<span class="k">void</span> word_mode_key(<span class="k">int</span> index, <span class="k">bool</span> long_press);
+<span class="k">void</span> word_mode_tick(uint32_t now_ms);
+word_action_t word_mode_poll(<span class="k">void</span>);
+<span class="k">int</span>  word_mode_index(<span class="k">void</span>);</pre></div>
+<div><h3>新增 · <code>presentation/ui_wordmode.h</code></h3>
+<pre style="font-size:11.6px"><span class="k">typedef void</span> (*ui_wordmode_menu_cb_t)(<span class="k">void</span>*);
+<span class="k">void</span> ui_wordmode_open(ui_wordmode_menu_cb_t, <span class="k">void</span>*);
+<span class="k">void</span> ui_wordmode_render(wm_screen_t, <span class="k">int</span> idx);
+<span class="k">void</span> ui_wordmode_key(ui_play_key_t, hal_btn_event_t);
+<span class="k">void</span> ui_wordmode_close(<span class="k">void</span>);
+<span class="k">bool</span> ui_wordmode_active(<span class="k">void</span>);
+<span class="k">int</span>  ui_wordmode_play(<span class="k">const char</span> *word, <span class="k">bool</span> slow);</pre></div>
+</div>
+<h3>修改 · 枚举与编排</h3>
+<pre style="font-size:11.8px"><span class="c">/* ui_plays.h：置顶，保证菜单第 1 项 */</span>
+<span class="k">typedef enum</span> { <span style="color:#7fd6a4">UI_PLAY_WORDMODE</span>, UI_PLAY_ANSWER, UI_PLAY_CLICKER,
+                UI_PLAY_DODGE, UI_PLAY_XIAOZHI, UI_PLAY_CONNECT } ui_play_id_t;
+<span class="k">void</span> ui_plays_set_wordmode_context(<span class="k">bool</span> in_wordmode);
+
+<span class="c">/* app_plays.h：与 app_plays_open_xiaozhi 同锁契约 */</span>
+<span class="k">bool</span> app_plays_open_wordmode(<span class="k">int</span> best);
+<span class="k">bool</span> app_plays_wordmode_active(<span class="k">void</span>);
+<span class="k">void</span> app_plays_wordmode_button(<span class="k">int</span> index, hal_btn_event_t e);</pre>
+<h3>复用现成接口（不改）</h3>
+<pre style="font-size:11.8px"><span class="c">/* services/{adpcm.h,audio_clip.h,audio_service.h} */</span>
+<span class="k">int</span>  adpcm_decode(adpcm_state_t *st, <span class="k">const</span> uint8_t *in, <span class="k">int</span> nbytes, int16_t *out);
+<span class="k">int</span>  audio_service_play(audio_service_t *, <span class="k">const void</span> *pcm, size_t bytes);
+<span class="c">/* ports/hal_kv.h */</span>  <span class="k">int</span> hal_kv_get/set(hal_kv_t*, <span class="k">const char</span>*, …);
+<span class="c">/* platform/xiaozhi.h */</span> <span class="k">void</span> xiaozhi_stop(<span class="k">void</span>); <span class="k">bool</span> xiaozhi_stopped(<span class="k">void</span>); <span class="k">void</span> xiaozhi_resume(<span class="k">void</span>);</pre>
+<div class="callout c-green"><b>音频链路（零新解码器）：</b>从 <code>kWordAudio[]</code> 取 ADP1 段 → 校验 magic/rate/ch → <code>audio_service_configure(16000,16,1)</code> → <b>每块 256 B</b> 调 <code>adpcm_decode()</code> 得 512 个 int16（1024 B PCM）→ <code>audio_service_play()</code> 循环。<code>pcm_buf</code> 用 <b>1 KiB 静态全局</b>，绝不放栈、绝不整段解码。慢速版不做实时变速（无 FPU），直接用预生成的 <code>*_slow.adp1</code>。</div>
+</section>
+
+<!-- 8 边界 -->
+<section>
+<h2><span class="n">8</span>明确不做（YAGNI / 分阶段边界）</h2>
+<table><thead><tr><th>不做</th><th style="width:80px">归属</th><th>原因</th></tr></thead><tbody>
+<tr><td>跟读评测、ASR 字幕比对、童音宽容表</td><td><b>P2</b></td><td>依赖在线服务 <code>stt.text</code>，P0 纯离线</td></tr>
+<tr><td>「讲完自动回单词模式」、<code>listen.detect.text</code> 上下文注入</td><td>P1/P2</td><td>依赖在线小智服务端，需实机验证</td></tr>
+<tr><td>NAS 下发词库 / 家长网页换词表</td><td>P1</td><td>路径已备好 <code>/vol1/1000/vvvv/words</code>，P0 不联网</td></tr>
+<tr><td>wordmemory 的 SM-2 曲线、登录、PWA、七牛云</td><td>不引入</td><td>只取 <code>word</code> / <code>progress</code> 数据形状</td></tr>
+<tr><td>设备端选单元、显示单词文本 / 中文 / 音标</td><td>不做</td><td>孩子不识字；单元切换只放家长端</td></tr>
+<tr><td><code>lv_canvas</code> / 全屏位图 / 阴影发光 / 整页动画</td><td>不做</td><td>40 KiB LVGL 池 + 堆 1KB，会 OOM</td></tr>
+<tr><td>新增解码器、改 <code>partitions.csv</code> / <code>sdkconfig.defaults</code></td><td>不做</td><td>方案 A 下均不需要</td></tr>
+</tbody></table>
+</section>
+
+<!-- 9 步骤 -->
+<section>
+<h2><span class="n">9</span>实现步骤清单（有序，逐步可验证）</h2>
+<div class="step"><div class="i">1</div><div class="tx"><b>拷资产</b>：<code>p0_pack.h</code> + <code>p0_audio.h</code> → <code>components/app/src/assets/</code>；3 个 <code>gen_*.py</code> → <code>tools/</code>。</div></div>
+<div class="step"><div class="i">2</div><div class="tx"><b>纯逻辑层</b>：写 <code>services/word_mode.c/.h</code>，加进 CMakeLists。PC 上 <code>gcc</code> 直接编译 + 单测覆盖全部状态转移（不依赖任何 IDF 头）。</div></div>
+<div class="step"><div class="i">3</div><div class="tx"><b>表现层骨架</b>：写 <code>ui_wordmode.c/.h</code>，先只做 ③ 主屏 + 笔画直绘（<code>LV_EVENT_DRAW_MAIN</code>），<b>不接音频</b>，<code>idf.py build</code> 通过。</div></div>
+<div class="step"><div class="i">4</div><div class="tx"><b>发音接入</b>：实现 ADP1 分块解码；先用 <code>apple</code> 一段验证出声，再放开 20 段。</div></div>
+<div class="step"><div class="i">5</div><div class="tx"><b>补齐 7 屏</b>：④⑤⑥ 反馈屏 + 1.5 s 定时跳转（<code>word_mode_tick</code>）。</div></div>
+<div class="step"><div class="i">6</div><div class="tx"><b>菜单集成</b>：枚举置顶 <code>UI_PLAY_WORDMODE</code>；首项默认高亮 + <code>ui_plays_set_wordmode_context()</code> 动态替换；<code>app.c</code> select 回调加分支。</div></div>
+<div class="step"><div class="i">7</div><div class="tx"><b>资源交接</b>：<code>app_plays_open_wordmode()</code> = <code>xiaozhi_stop()</code> → 等 <code>xiaozhi_stopped()</code> → <code>ui_wordmode_open()</code>；退出反向 <code>xiaozhi_resume()</code>。打印堆基线。</div></div>
+<div class="step"><div class="i">8</div><div class="tx"><b>按键落地（C1）</b>：<code>app.c</code> 长按 OK 触发 <code>ui_plays_menu()</code>；<code>app_plays_wordmode_button()</code> 转发裸手势。<b>实机核对触发键究竟是长按 OK 还是短按 OK</b>（以 <code>app.c</code> 现有 <code>on_button</code> 为准）。</div></div>
+<div class="step"><div class="i">9</div><div class="tx"><b>进度持久化</b>：<code>hal_kv</code> 存 / 取 <code>wordmode:index</code>。</div></div>
+<div class="step"><div class="i">10</div><div class="tx"><b>契约测试</b>：写 <code>test_wordmode_contract.py</code>（§10）；跑仓库全量测试命令。</div></div>
+<div class="step"><div class="i">11</div><div class="tx"><b>真机验收</b>：按 §1 逐项过；重点让 <b>6 岁小朋友实按</b>，确认缩小后的 84×52 两个图案仍认得出。</div></div>
+<div class="step"><div class="i">12</div><div class="tx"><b>出包</b>：<code>idf.py build</code> → <code>python scripts/release.py</code> → <code>python tools/verify_release.py</code>。</div></div>
+</section>
+
+<!-- 10 测试 -->
+<section>
+<h2><span class="n">10</span>测试与验收</h2>
+<h3>新增契约测试 <code>components/app/test/test_wordmode_contract.py</code></h3>
+<ul>
+<li><code>ui_plays.h</code> 中 <code>UI_PLAY_WORDMODE</code> 位于枚举<b>首位</b>；<code>ui_plays.c</code> 含 <code>ui_plays_set_wordmode_context</code>。</li>
+<li><code>ui_wordmode.c</code> <b>不含</b> <code>lv_canvas_create</code> / <code>lv_image_create</code> / shadow / 全屏 <code>lv_img_dsc_t</code>；<b>含</b> <code>LV_EVENT_DRAW_MAIN</code>。</li>
+<li><code>word_mode.c</code> <b>不含</b> <code>lvgl.h</code> / <code>esp_</code> / <code>driver/</code> 头（保证可 PC 单测）。</li>
+<li><code>p0_pack.h</code> 的 <code>WORD_P0_COUNT</code> 与 <code>p0_words.json</code> 的 <code>totals.words</code> 一致；每词 <code>stroke_count</code> 与字节流长度自洽。</li>
+<li><code>p0_audio.h</code> 的 <code>WORD_AUDIO_COUNT</code> 与 manifest 词数一致，且每段头 4 字节为 <code>41 44 50 31</code>。</li>
+<li>按键映射中<b>不存在</b>「长按 DOWN 呼出菜单」（C1 生效）；若回退 v0.3，改这条断言即可。</li>
+</ul>
+<h3>全量回归（直接复用 <code>XIAOZHI_BUILD.txt</code> 给定命令）</h3>
+<pre style="font-size:11.7px">python -m unittest discover -s tests/host -p 'test_*.py'
+python -m unittest discover -s components/app/test -p 'test_*.py'
+python -m unittest discover -s components/ui/presentation/test -p 'test_*.py'
+python -m unittest discover -s tools -p 'test_*.py'
+python tools/gen_ui_fonts.py --check &amp;&amp; python tools/gen_cn_font.py --check
+python tools/gen_font_oracle.py --check &amp;&amp; python tools/gen_font_notices.py --check
+cmake -S tests/host/ui -B build-native-ui -DPET_ART_REFERENCE_PYTHON=&lt;含Pillow的Python&gt; \
+  &amp;&amp; cmake --build build-native-ui &amp;&amp; ctest --test-dir build-native-ui --output-on-failure</pre>
+<div class="callout c-orange"><b>产品验收（最重要）：</b>让小朋友实按，确认「UP=拇指、DOWN=问号」零门槛。若不成立，P0 的价值就在这一步——改图案或改映射，<b>不牵动架构</b>。</div>
+</section>
+
+<!-- 11 风险 -->
+<section>
+<h2><span class="n">11</span>风险与回退</h2>
+<table><thead><tr><th>风险</th><th>触发条件</th><th>回退</th></tr></thead><tbody>
+<tr><td><b>C1 按键映射</b></td><td>你或真机觉得长按 OK 不顺手</td><td>改 <code>app.c</code> 一处判断即回退 v0.3，其余文件不动</td></tr>
+<tr><td>app 分区余量不足</td><td><code>idf.py size</code> 显示 &lt; 320 KiB</td><td>转方案 B：ADP1 单独成段；或降采样到 8 kHz 减半</td></tr>
+<tr><td><code>audio_service_play</code> 阻塞 LVGL</td><td>播放时掉帧 / WDT</td><td>移到 plays worker，按 <code>acquire_audio</code> 锁契约执行</td></tr>
+<tr><td>长按 OK 实际是短按 OK</td><td>实机核对 <code>app.c</code> 与文档不符</td><td>以实现为准，同步改 §6 / §9 与契约断言，<b>不影响架构</b></td></tr>
+<tr><td>40 KiB 池不够 7 屏对象</td><td>创建对象返回 NULL</td><td>每屏用完 <code>lv_obj_delete_async</code>；必要时 ⑤⑥ 合并换图标</td></tr>
+<tr><td><code>stt.text</code> 拿不到</td><td>P2 才涉及</td><td>v0.3 第 12 节已固化：退化 <code>llm.emotion</code>，隔离在 <code>word_proto.c</code></td></tr>
+</tbody></table>
+</section>
+
+<!-- 12 资产 -->
+<section>
+<h2><span class="n">12</span>已生成资产清单（校验通过）</h2>
+<div class="grid g3">
+<div class="box"><div class="big">10 <span class="unit">词</span></div><div style="font-size:12.5px;color:var(--muted)">线图 <b>149 笔 / 775 B</b><br><code>p0_pack.h</code> / <code>.bin</code> / <code>p0_words.json</code></div></div>
+<div class="box"><div class="big">20 <span class="unit">段</span></div><div style="font-size:12.5px;color:var(--muted)">ADP1 发音 <b>280.0 KiB</b><br>全部 <code>adpcm_decode()</code> 回环通过</div></div>
+<div class="box"><div class="big">60 <span class="unit">词</span></div><div style="font-size:12.5px;color:var(--muted)">6 单元词表（<b>P1</b> 用）<br><code>/workspace/words/</code> → NAS</div></div>
+</div>
+<table style="margin-top:14px"><thead><tr><th>文件</th><th>内容</th><th style="width:120px">大小</th></tr></thead><tbody>
+<tr><td><code>p0-pack/p0_pack.h</code></td><td>10 词线图 C 数组（<code>static const</code>，Flash XIP）</td><td>6.9 KiB</td></tr>
+<tr><td><code>p0-pack/p0_audio.h</code></td><td>20 段 ADP1 的 C 数组</td><td>280 KiB 二进制</td></tr>
+<tr><td><code>p0-pack/audio/*.adp1</code></td><td>设备可直接解码的发音（normal + slow）</td><td>280.0 KiB</td></tr>
+<tr><td><code>p0-pack/audio/*.opus</code></td><td>中间产物 Ogg Opus，设备不解，<b>仅留档</b></td><td>41.6 KiB</td></tr>
+<tr><td><code>p0-pack/audio/manifest.json</code></td><td>每段字节数 / 样本数 / 解码 MAE</td><td>7 KiB</td></tr>
+<tr><td><code>p0-pack/gen_*.py</code></td><td>3 个可复现生成脚本</td><td>—</td></tr>
+<tr><td><code>words/</code>（6 单元 60 词）</td><td>P1 NAS 下发，路径 <code>/vol1/1000/vvvv/words</code></td><td>—</td></tr>
+</tbody></table>
+<h3>构建与烧录</h3>
+<pre style="font-size:11.8px">. $IDF_PATH/export.sh        <span class="c"># ESP-IDF v5.5.3，依赖见 dependencies.lock</span>
+idf.py build
+python scripts/release.py
+python tools/verify_release.py releases/&lt;生成的ZIP&gt; --build-dir build</pre>
+<div class="callout c-red"><b>六段镜像：</b><code>XIAOZHI_BUILD.txt</code> 第 19 条明确，升级必须配套刷入 <code>petart.bin</code> / <code>companion.bin</code> 与应用，<b>不能只更新应用 BIN</b>。P0 方案 A 不新增镜像段，仍按现有 release 流程走。<code>.18</code> 小程序合并版使用 <code>partitions-miniapp.csv</code>，<b>两种布局不可混刷</b>——请确认手上的设备是标准 <code>partitions.csv</code> 版。</div>
+</section>
+
+<footer>
+工程 PRD · P0 离线保底版 · 2026-11-09 · 与 <b>wordmode-plan.html v0.3.1</b> 配套<br>
+依据：arraylee/ai-passport-xiaozhi-custom 2.1.0-xiaozhi.18 源码（doc/ARCHITECTURE.md、XIAOZHI_BUILD.txt、partitions.csv、各 HAL/服务头文件）、78/xiaozhi-esp32 WebSocket 协议、doramart/wordmemory 数据模型整理。<br>
+内存数字为估算，落地前以实机 <code>heap_caps_get_free_size()</code> 与 <code>idf.py size</code> 复核。<b>C1 已确认定稿。</b>
+</footer>
+
+</div>
+</body>
+</html>

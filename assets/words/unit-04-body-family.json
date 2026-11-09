@@ -1,0 +1,18 @@
+{
+  "id": "unit-04",
+  "title": "身体与家人",
+  "slug": "body-family",
+  "age": 6,
+  "words": [
+    { "id": "hand", "word": "hand", "ipa": "/hænd/", "cn": "手", "syllables": 1, "say": "五根手指，用来拿东西、打招呼", "draw": "一只张开的手掌：掌部轮廓 + 5 根手指短线", "strokes_max": 24, "tags": ["body"] },
+    { "id": "eye", "word": "eye", "ipa": "/aɪ/", "cn": "眼睛", "syllables": 1, "say": "用来看东西，会一眨一眨", "draw": "杏仁形眼眶 + 中间一个圆瞳 + 上方 3 根短睫毛", "strokes_max": 20, "tags": ["body"] },
+    { "id": "nose", "word": "nose", "ipa": "/nəʊz/", "cn": "鼻子", "syllables": 1, "say": "用来闻味道，香香的", "draw": "一条 L 形鼻梁线 + 下方两个小点", "strokes_max": 14, "tags": ["body"] },
+    { "id": "mouth", "word": "mouth", "ipa": "/maʊθ/", "cn": "嘴巴", "syllables": 1, "say": "用来吃东西、说话和笑", "draw": "一条上扬的弧线 + 两端小嘴角", "strokes_max": 16, "tags": ["body"] },
+    { "id": "ear", "word": "ear", "ipa": "/ɪə(r)/", "cn": "耳朵", "syllables": 1, "say": "用来听声音，在头两边", "draw": "一个 C 形外耳 + 内侧一条小弧", "strokes_max": 18, "tags": ["body"] },
+    { "id": "foot", "word": "foot", "ipa": "/fʊt/", "cn": "脚", "syllables": 1, "say": "用来走路、跑和跳", "draw": "侧面的脚形轮廓 + 5 个小脚趾点", "strokes_max": 22, "tags": ["body"] },
+    { "id": "mom", "word": "mom", "ipa": "/mɒm/", "cn": "妈妈", "syllables": 1, "say": "长头发，会抱抱你", "draw": "圆脸 + 两侧长发弧线 + 两只点眼 + 微笑弧", "strokes_max": 22, "tags": ["family"] },
+    { "id": "dad", "word": "dad", "ipa": "/dæd/", "cn": "爸爸", "syllables": 1, "say": "短头发，高高大大", "draw": "圆脸 + 顶部短发锯齿线 + 两只点眼 + 微笑弧", "strokes_max": 22, "tags": ["family"] },
+    { "id": "baby", "word": "baby", "ipa": "/ˈbeɪbi/", "cn": "婴儿", "syllables": 2, "say": "小小的，会哭也会笑", "draw": "一个小圆脸 + 小小的身体 + 一撮头发", "strokes_max": 20, "tags": ["family"] },
+    { "id": "friend", "word": "friend", "ipa": "/frend/", "cn": "朋友", "syllables": 1, "say": "一起玩、一起笑的人", "draw": "两个并排的小圆人 + 中间一条相连的握手线", "strokes_max": 24, "tags": ["family"] }
+  ]
+}

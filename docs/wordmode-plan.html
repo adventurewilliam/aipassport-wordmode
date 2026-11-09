@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Passport · 单词模式 — 框架与线稿 v0.2</title>
+<style>
+:root{
+  --bg:#f6f4ef; --paper:#ffffff; --ink:#202a33; --muted:#6c7885; --line:#d5dce2;
+  --dash:#9aa7b2; --soft:#f1ede4; --warm:#e07a3f; --cool:#4a7fb5; --ok:#3f8f5b;
+  --accent:#c8455a; --teal:#2f6f6b;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+ line-height:1.75;font-size:15px}
+.wrap{max-width:1080px;margin:0 auto;padding:36px 26px 80px}
+header{border-bottom:2px solid var(--ink);padding-bottom:22px;margin-bottom:26px}
+.kicker{font-size:12px;letter-spacing:.22em;color:var(--accent);font-weight:700}
+h1{font-size:30px;margin:8px 0 6px;letter-spacing:-.02em}
+.sub{color:var(--muted);font-size:14px}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.fact{background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:5px 11px;font-size:12.5px;color:#4a5560}
+.fact b{color:var(--ink)}
+h2{font-size:20px;margin:42px 0 14px;padding-left:12px;border-left:4px solid var(--accent)}
+h3{font-size:16px;margin:24px 0 10px;color:var(--teal)}
+p{margin:9px 0}
+small,.note{color:var(--muted);font-size:12.5px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:20px 22px;margin:14px 0}
+.callout{background:#fff8ef;border:1px solid #f0cfae;border-left:4px solid var(--warm);border-radius:8px;padding:14px 18px;margin:14px 0}
+.callout.blue{background:#f0f6fc;border-color:#bcd6ee;border-left-color:var(--cool)}
+.callout.red{background:#fdf1f2;border-color:#f0c3c9;border-left-color:var(--accent)}
+.callout.green{background:#f0f8f2;border-color:#bfe3c9;border-left-color:var(--ok)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.mini{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.mini h4{margin:0 0 6px;font-size:14px}
+.mini p{margin:0;font-size:13px;color:var(--muted)}
+.big-num{font-size:26px;font-weight:800;color:var(--accent);display:block;line-height:1.2}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;background:var(--paper)}
+th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+th{background:var(--soft);font-weight:700;font-size:13px}
+pre{background:#1e2830;color:#e6edf3;border-radius:8px;padding:14px 16px;overflow-x:auto;font-size:12.5px;line-height:1.6}
+pre .k{color:#8fd0ff}pre .s{color:#c6e6a0}pre .c{color:#8b98a5}
+.tag{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--line);background:var(--soft);color:var(--muted)}
+.tag.y{background:#eaf5ee;border-color:#b9ddc5;color:var(--ok)}
+.tag.n{background:#fbeef0;border-color:#f0c6cd;color:var(--accent)}
+.tag.r{background:#eaf2f7;border-color:#bcd6ee;color:var(--cool)}
+.tag.new{background:#fdf1f2;border-color:#f0c3c9;color:var(--accent);font-weight:700}
+ul,ol{padding-left:22px;margin:9px 0}
+li{margin:5px 0}
+.svgbox{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto}
+.svgbox svg{display:block;width:100%;height:auto;min-width:640px}
+.phones{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:18px 0}
+.phone{width:184px}
+.phone svg{width:100%;height:auto;display:block;filter:drop-shadow(0 4px 10px rgba(30,40,50,.10))}
+.phone .cap{text-align:center;font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5}
+.phone .cap b{color:var(--ink);display:block;font-size:13px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;font-size:12.5px;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.decide{counter-reset:d;list-style:none;padding:0}
+.decide li{counter-increment:d;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:8px;padding:13px 16px 13px 52px;position:relative;margin:10px 0}
+.decide li::before{content:"D" counter(d);position:absolute;left:14px;top:13px;font-weight:800;color:var(--teal);font-size:13px}
+.decide .q{font-weight:700}
+.decide .a{color:var(--muted);font-size:13px}
+footer{margin-top:56px;border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font-size:12.5px}
+@media(max-width:760px){.grid3,.grid2{grid-template-columns:1fr}.wrap{padding:22px 14px 60px}h1{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">FRAMEWORK &amp; WIREFRAME · v0.3.1 · 决策已定稿 · 已按真实仓库校订</div>
+  <h1>AI Passport · 小朋友单词模式</h1>
+  <div class="sub">底层：<b>arraylee/ai-passport-xiaozhi-custom</b>　｜　词表与资源：<b>飞牛 NAS /vol1/1000/vvvv/words</b>　｜　语音：<b>小智在线服务（不自建）</b></div>
+  <div class="facts">
+    <span class="fact"><b>ESP32-C3</b> · 8 MB Flash · <b>无 PSRAM</b></span>
+    <span class="fact"><b>240×320</b> 竖屏 RGB565</span>
+    <span class="fact"><b>无触屏</b> · 仅 UP / DOWN / OK 三键</span>
+    <span class="fact">ES8311 麦克风 + 扬声器 · Opus 16 kHz</span>
+    <span class="fact">适用 <b>6 岁</b> · 幼儿园大班 / 一年级</span>
+    <span class="fact">词表已生成：<b>6 单元 / 60 词</b></span>
+  </div>
+</header>
+
+<div class="callout blue">
+<b>v0.3.1 校订（2026-11-09，读完底层仓库源码后）：</b>v0.3 是在未取得源码时写的，其中「DOWN 键长按 3 秒呼出菜单」与真实固件不符——<code>XIAOZHI_BUILD.txt</code> 第 4 条明确「对话页<b>长按确认</b>打开菜单」。本版统一改为 <b>长按 OK 呼出菜单</b>，把 v0.3 的两个长按键合并为一个；「问小智」改为经菜单首项「返回小智」回对话页口头问。另外真实仓库是<b>组件化端口-适配器架构</b>（<code>components/core/services</code>、<code>components/ui/presentation</code>、<code>components/app</code>），不是 <code>main/</code> 下堆文件；仓库还自带 <code>ADP1</code> 容器与 <code>adpcm_decode()</code>，发音不必自建 Opus 解码器。<b>你已拍板的产品决策（UP/DOWN 直选、按钮缩小、单词模式置顶、进出两步）全部不变。</b>完整工程落点、内存预算与实现清单见 <code>/workspace/p0-prd.md</code> 与 <code>/workspace/p0-prd.html</code>。<span class="tag new">C1 已确认定稿</span>
+</div>
+
+<h2>0. 本轮决策记录</h2>
+<table>
+<tr><th style="width:44px">#</th><th style="width:210px">你的决定</th><th>对方案的改动</th></tr>
+<tr><td>1</td><td>按推荐（UP/DOWN 直选）；<b>按钮别那么大，不超过 1/4 屏</b></td><td>两个图案压成底部小卡（各 84×52，合计约屏 <b>11%</b>），腾出的空间全部给线图，图放大到约 160×160。<span class="tag new">主屏已重画</span></td></tr>
+<tr><td>2</td><td>NAS 按单元<b>下发</b></td><td>保持「NAS 下发为主 + 内置 8–10 张保底图」；换词表不刷固件。路径按你给的 <code>/vol1/1000/vvvv/words</code> 落地。</td></tr>
+<tr><td>3</td><td><b>用小智在线服务器</b></td><td>去掉自建 xiaozhi-esp32-server。评测链路重做：不再依赖 <code>custom</code> 回传，改为<b>设备本地比对服务端下发的 <code>stt</code> 转写文本</b>。详见第 8 节。<span class="tag new">架构已改</span></td></tr>
+<tr><td>4</td><td>词表你看着来 + <b>生成适合 6 岁的</b></td><td>已生成 6 单元 60 词，按「具体、可画、2 音节内、6 岁高频」筛选，含中文讲解提示与简笔画描述。详见第 10 节，文件在 <code>/workspace/words/</code>。</td></tr>
+<tr><td>5</td><td>DSH <b>先不用</b></td><td>架构中移除 DSH 通道，运行时只走 Wi-Fi：语音到在线服务，数据到 NAS。</td></tr>
+<tr><td>＋</td><td>补充<b>日常小智界面</b>和<b>进入单词模式</b></td><td>新增 2 屏线稿 + 顶层模式切换状态机；进入方式定为「<b>长按 OK</b> 呼出右侧菜单 → 首项 OK 直接进入」。<span class="tag new">v0.3.1 校订</span></td></tr>
+<tr><td>＋</td><td><b>单词模式放在菜单第一个</b></td><td>置顶且默认高亮，呼出菜单后按一下 OK 即进入；从单词模式呼出时首项动态变为「返回小智」，进和出都两步。<span class="tag new">v0.3</span></td></tr>
+<tr><td>＋</td><td>第 12 节的 3 个待确认项「可以」</td><td>三条均按方案定稿执行，降级路径一并固化；实机验证放到 P0 / P2 验收环节。详见第 12 节。</td></tr>
+</table>
+
+<h2>1. 三条硬约束</h2>
+<div class="grid3">
+  <div class="mini"><span class="big-num">01</span><h4>没有触屏，只有三颗键</h4><p>孩子没法「点拇指」。所以 <b>UP=认识（拇指）、DOWN=不记得（问号）</b>，一次按键直接表达，不引入「先移动焦点再确认」的概念。</p></div>
+  <div class="mini"><span class="big-num">02</span><h4>一张全屏位图吃掉内存</h4><p>240×320×2 B ≈ <b>150 KiB</b>，而 C3 全部 SRAM 约 400 KiB。<b>不存图片，只存笔画指令</b>，LVGL 现画。按钮缩小后，线图反而能画得更大更清楚。</p></div>
+  <div class="mini"><span class="big-num">03</span><h4>在线服务不回传结构化结果</h4><p>xiaozhi.me 会下发 <code>stt</code> 转写文本和 <code>llm</code> 表情，但不会发自定义 <code>custom</code>。<b>判定放在设备本地做</b>，反而更简单、更快、零额外服务。</p></div>
+</div>
+<div class="callout green">
+<b>v0.2 一句话：</b>两条链路彻底解耦——<b>语音</b>走小智在线服务（ASR / LLM / TTS），<b>词表、线图、发音、进度</b>走飞牛 NAS 局域网。设备端只做一个薄壳，换词表不刷固件；断网时内置保底包仍能看图、听音、按两个键，只是跟读和问小智暂不可用。
+</div>
+
+<h2>2. 系统架构（v0.2）</h2>
+<div class="svgbox">
+<svg viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,Microsoft YaHei,sans-serif">
+  <defs>
+    <marker id="ar" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#6c7885"/></marker>
+    <marker id="ar2" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#2f6f6b"/></marker>
+  </defs>
+  <rect x="0" y="0" width="1000" height="400" fill="#fff"/>
+
+  <rect x="20" y="34" width="300" height="332" rx="12" fill="#f1ede4" stroke="#c8455a" stroke-width="2"/>
+  <text x="40" y="62" font-size="16" font-weight="700">设备层 · AI Passport</text>
+  <text x="40" y="82" font-size="11.5" fill="#6c7885">arraylee/ai-passport-xiaozhi-custom</text>
+  <g font-size="12">
+    <rect x="40" y="98" width="260" height="44" rx="7" fill="#fff" stroke="#d5dce2"/><text x="54" y="117" font-weight="700">日常小智对话态（原固件，不改）</text><text x="54" y="133" font-size="11" fill="#6c7885">动态形象 / 字幕 / 菜单 / 音量 / 休眠</text>
+    <rect x="40" y="150" width="260" height="44" rx="7" fill="#fdf1f2" stroke="#f0c3c9"/><text x="54" y="169" font-weight="700" fill="#c8455a">单词模式 FSM + 7 屏 LVGL 线稿</text><text x="54" y="185" font-size="11" fill="#6c7885">与对话态互斥；共用一条 WebSocket</text>
+    <rect x="40" y="202" width="260" height="44" rx="7" fill="#fff" stroke="#d5dce2"/><text x="54" y="221" font-weight="700">线图渲染 + 单元包缓存</text><text x="54" y="237" font-size="11" fill="#6c7885">word_render / word_pack：只留当前 2 词</text>
+    <rect x="40" y="254" width="260" height="44" rx="7" fill="#fff" stroke="#d5dce2"/><text x="54" y="273" font-weight="700">跟读判定（本地）</text><text x="54" y="289" font-size="11" fill="#6c7885">读 stt.text → 归一化 → 编辑距离</text>
+    <rect x="40" y="306" width="260" height="44" rx="7" fill="#fff" stroke="#d5dce2"/><text x="54" y="325" font-weight="700">进度 NVS + 保底单元包</text><text x="54" y="341" font-size="11" fill="#6c7885">8–10 张内置线图，断网可玩</text>
+  </g>
+
+  <rect x="350" y="34" width="320" height="332" rx="12" fill="#eef5f4" stroke="#2f6f6b" stroke-width="2"/>
+  <text x="370" y="62" font-size="16" font-weight="700">飞牛 NAS · /vol1/1000/vvvv/words</text>
+  <text x="370" y="82" font-size="11.5" fill="#6c7885">局域网 HTTP，家长网页可管理</text>
+  <g font-size="12">
+    <rect x="370" y="98" width="280" height="54" rx="7" fill="#fff" stroke="#d5dce2"/><text x="384" y="118" font-weight="700">wordmode-hub（轻量静态服务）</text><text x="384" y="135" font-size="11" fill="#6c7885">单元包下发 / 进度接收 / 家长换词表页</text><text x="384" y="148" font-size="11" fill="#6c7885">Docker 一个容器即可，甚至 dufs 静态服务</text>
+    <rect x="370" y="160" width="280" height="54" rx="7" fill="#f7fbf9" stroke="#bcd9d4"/><text x="384" y="180" font-weight="700">words/ 目录（已生成，可直接拷贝）</text><text x="384" y="197" font-size="11" fill="#6c7885">index.json　unit-01…06.json</text><text x="384" y="210" font-size="11" fill="#6c7885">lineart/*.bin　audio/*.opus　packs/*.bin</text>
+    <rect x="370" y="222" width="280" height="54" rx="7" fill="#fff" stroke="#d5dce2"/><text x="384" y="242" font-weight="700">备课脚本（离线跑，不占运行时）</text><text x="384" y="259" font-size="11" fill="#6c7885">词表 JSON → 笔画指令 → TTS 发音 → 打包</text><text x="384" y="272" font-size="11" fill="#6c7885">家长可预览每张线图，改完点「发布」</text>
+    <rect x="370" y="284" width="280" height="66" rx="7" fill="#fff" stroke="#d5dce2"/><text x="384" y="304" font-weight="700">wordmemory 内核（裁剪）</text><text x="384" y="321" font-size="11" fill="#6c7885">只取 word / progress 两个 Model + 复习曲线</text><text x="384" y="335" font-size="11" fill="#6c7885">这个规模用 JSON / SQLite 就够，不必 MongoDB</text>
+  </g>
+
+  <rect x="700" y="34" width="280" height="332" rx="12" fill="#f4f1fa" stroke="#6b5b95" stroke-width="2"/>
+  <text x="720" y="62" font-size="16" font-weight="700">小智在线服务（xiaozhi.me）</text>
+  <text x="720" y="82" font-size="11.5" fill="#6c7885">沿用你现有账号与智能体，不自建</text>
+  <g font-size="12">
+    <rect x="720" y="100" width="240" height="58" rx="7" fill="#fff" stroke="#d5dce2"/><text x="734" y="120" font-weight="700">ASR → 下发 type:stt</text><text x="734" y="137" font-size="11" fill="#6c7885">孩子跟读的转写文本回到设备</text><text x="734" y="150" font-size="11" fill="#6c7885">设备拿它做本地判定（关键）</text>
+    <rect x="720" y="166" width="240" height="58" rx="7" fill="#fff" stroke="#d5dce2"/><text x="734" y="186" font-weight="700">LLM + TTS → 问小智</text><text x="734" y="203" font-size="11" fill="#6c7885">长按 OK 切回对话态，用幼儿园语言讲</text><text x="734" y="216" font-size="11" fill="#6c7885">字幕 / emotion 照常显示</text>
+    <rect x="720" y="232" width="240" height="58" rx="7" fill="#fdf1f2" stroke="#f0c3c9"/><text x="734" y="252" font-weight="700" fill="#c8455a">不下发 custom</text><text x="734" y="269" font-size="11" fill="#6c7885">因此评测不走服务端，改设备本地</text><text x="734" y="282" font-size="11" fill="#6c7885">上下文注入改走 listen.text（待验证）</text>
+    <rect x="720" y="298" width="240" height="52" rx="7" fill="#fff" stroke="#d5dce2"/><text x="734" y="318" font-weight="700">LLM 备课（一次性，可选）</text><text x="734" y="335" font-size="11" fill="#6c7885">生成线图笔画 / 中文讲解，产物存 NAS</text>
+  </g>
+
+  <path d="M320 130 C335 130 338 130 350 130" stroke="#2f6f6b" stroke-width="2" fill="none" marker-end="url(#ar2)"/>
+  <text x="322" y="122" font-size="10.5" fill="#2f6f6b">HTTP</text><text x="322" y="148" font-size="10.5" fill="#2f6f6b">拉单元包</text>
+  <path d="M320 276 C335 276 338 276 350 276" stroke="#2f6f6b" stroke-width="2" fill="none" marker-end="url(#ar2)"/>
+  <text x="322" y="268" font-size="10.5" fill="#2f6f6b">HTTP</text><text x="322" y="294" font-size="10.5" fill="#2f6f6b">回写进度</text>
+  <path d="M320 178 L700 178" stroke="#c8455a" stroke-width="2" fill="none" stroke-dasharray="6 4" marker-end="url(#ar)"/>
+  <rect x="440" y="166" width="188" height="24" rx="6" fill="#fff" stroke="#d5dce2"/>
+  <text x="534" y="182" font-size="11" text-anchor="middle" fill="#c8455a">WSS · Opus + stt / tts / llm（语音链路独立）</text>
+  <text x="40" y="386" font-size="11" fill="#6c7885">两条链路互不依赖：NAS 挂了仍可对话、仍可玩内置保底单元；外网断了仍可看图听音，只是跟读与问小智不可用。</text>
+</svg>
+</div>
+
+<h3>设备端新增文件 <span class="tag new">v0.3.1 校订</span>（真实仓库是组件化六边形架构，不是 <code>main/</code> 堆文件）</h3>
+<table>
+<tr><th style="width:300px">文件</th><th>职责</th><th style="width:96px">预算</th></tr>
+<tr><td><code>components/core/services/src/word_mode.c</code> + <code>include/services/word_mode.h</code></td><td>纯 C 状态机：SHOW → KNOWN / UNKNOWN / REPLAY / NEXT；<b>不 include LVGL / IDF</b>，可在 PC 上单测</td><td>~80 B</td></tr>
+<tr><td><code>components/ui/presentation/src/ui_wordmode.c</code> + <code>.h</code></td><td>7 屏 LVGL 页面；<code>LV_EVENT_DRAW_MAIN</code> 里逐笔直绘（<b>不用 canvas</b>）；ADP1 分块解码播放</td><td>1 KiB 缓冲</td></tr>
+<tr><td><code>components/app/src/assets/p0_pack.h</code> / <code>p0_audio.h</code></td><td>P0 内置保底包：10 词线图 775 B + 20 段 ADP1 发音 280 KiB；<code>static const</code> 映射 Flash，<b>零 SRAM</b></td><td>0 B SRAM</td></tr>
+<tr><td><code>components/app/src/app_plays.c</code> / <code>app.c</code>（改）</td><td>模式切换与资源交接：<code>xiaozhi_stop()</code> → 等 <code>stopped()</code> → 开单词模式；菜单首项动态替换；长按 OK 呼出菜单</td><td>小</td></tr>
+<tr><td><code>components/ui/presentation/src/ui_plays.c</code> / <code>.h</code>（改）</td><td><code>ui_play_id_t</code> 置顶 <code>UI_PLAY_WORDMODE</code>；首项默认高亮 + <code>ui_plays_set_wordmode_context()</code></td><td>小</td></tr>
+<tr><td><code>components/app/test/test_wordmode_contract.py</code></td><td>契约测试：禁用 canvas / 全屏位图、枚举置顶、词数与步长自洽、ADP1 头校验</td><td>—</td></tr>
+</table>
+<div class="callout blue" style="margin-top:10px"><b>v0.4 图案落地（2026-11-09 · 方案 A 已执行）：</b>P0 的 banana / milk / tree 三张线图照 bbyingyu.com 的 emoji 形态重描、<b>hand 换词为 eye</b>；线图 10 词 / <b>149 笔 / 775 B</b>，20 段 ADP1 <b>280.0 KiB</b>。<b>音标不新增、不改动；<code>words/</code> 6 单元 60 词零改动；设备端渲染链路不变。</b>逐词改前/改后对比见 <code>/workspace/p0-words-review.html</code>，改前笔画存档 <code>p0-pack/lineart-before.json</code>。<span class="tag new">方案 A 已执行</span></div>
+<div class="callout blue" style="margin-top:10px">P1/P2 才会新增 <code>word_pack.c</code>（NAS 下发）与 <code>word_proto.c</code>（取 <code>stt.text</code> 做本地比对、隔离协议细节）。<b>P0 不需要这两层</b>；完整接口签名见 <code>/workspace/p0-prd.md</code> §7。</div>
+
+<h2>3. 顶层模式切换状态机</h2>
+<div class="svgbox">
+<svg viewBox="0 0 1000 330" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,Microsoft YaHei,sans-serif">
+<defs><marker id="a3" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#6c7885"/></marker></defs>
+<rect x="0" y="0" width="1000" height="330" fill="#fff"/>
+<text x="24" y="28" font-size="12" font-weight="700" fill="#2f6f6b">上层：模式切换</text>
+<g font-size="12.5" text-anchor="middle">
+<rect x="24" y="44" width="176" height="62" rx="9" fill="#202a33" stroke="#202a33"/><text x="112" y="68" fill="#fff" font-weight="700">日常小智对话态</text><text x="112" y="87" font-size="11" fill="#9fb0bd">原固件 · 线稿 ①</text>
+<rect x="264" y="44" width="176" height="62" rx="9" fill="#f1ede4" stroke="#c8455a" stroke-width="2"/><text x="352" y="68" font-weight="700">右侧菜单</text><text x="352" y="87" font-size="11" fill="#6c7885">线稿 ② · 首项「单词模式」</text>
+<rect x="504" y="44" width="188" height="62" rx="9" fill="#fdf1f2" stroke="#c8455a" stroke-width="2"/><text x="598" y="68" font-weight="700" fill="#c8455a">单词模式</text><text x="598" y="87" font-size="11" fill="#6c7885">直接进入当前单元（家长设定）</text>
+<rect x="756" y="44" width="220" height="62" rx="9" fill="#fff" stroke="#4a7fb5" stroke-width="2"/><text x="866" y="68" font-weight="700">问小智（临时回对话态）</text><text x="866" y="87" font-size="11" fill="#6c7885">P1/P2：讲完自动回</text>
+</g>
+<g stroke="#6c7885" stroke-width="2" fill="none" marker-end="url(#a3)">
+<path d="M200 75 L262 75"/><path d="M440 75 L502 75"/><path d="M692 75 L754 75"/>
+</g>
+<text x="231" y="68" font-size="10" fill="#6c7885">OK 长按</text><text x="471" y="68" font-size="10" fill="#6c7885">OK</text><text x="723" y="68" font-size="10" fill="#6c7885">OK 长按→OK</text>
+<path d="M866 106 L866 132 L598 132 L598 108" stroke="#4a7fb5" stroke-width="2" fill="none" marker-end="url(#a3)" stroke-dasharray="5 4"/>
+<text x="732" y="127" font-size="10.5" fill="#4a7fb5">讲完 / OK 短按 返回</text>
+<path d="M598 106 L598 150 L112 150 L112 108" stroke="#2f6f6b" stroke-width="2" fill="none" marker-end="url(#a3)" stroke-dasharray="5 4"/>
+<text x="300" y="145" font-size="10.5" fill="#2f6f6b">菜单选「返回小智」/ 单词模式内 OK 长按呼出菜单</text>
+
+<text x="24" y="186" font-size="12" font-weight="700" fill="#2f6f6b">下层：单词模式内部</text>
+<g font-size="12" text-anchor="middle">
+<rect x="24" y="202" width="160" height="58" rx="8" fill="#fff" stroke="#d5dce2"/><text x="104" y="224" font-weight="700">CARD 看图</text><text x="104" y="241" font-size="11" fill="#6c7885">线图 + 自动播发音</text>
+<rect x="216" y="202" width="160" height="58" rx="8" fill="#fff" stroke="#d5dce2"/><text x="296" y="224" font-weight="700">CHOOSE 二选一</text><text x="296" y="241" font-size="11" fill="#6c7885">UP 认识 / DOWN 不记得</text>
+<rect x="408" y="202" width="160" height="58" rx="8" fill="#fff" stroke="#4a7fb5" stroke-width="2"/><text x="488" y="224" font-weight="700">SPEAK 跟读</text><text x="488" y="241" font-size="11" fill="#6c7885">Opus 上行 → stt 本地比对</text>
+<rect x="600" y="202" width="160" height="58" rx="8" fill="#fff" stroke="#d5dce2"/><text x="680" y="224" font-weight="700">RESULT 结果</text><text x="680" y="241" font-size="11" fill="#6c7885">大拇指 / 耳朵+循环箭头</text>
+<rect x="792" y="202" width="184" height="58" rx="8" fill="#f0f8f2" stroke="#bfe3c9"/><text x="884" y="224" font-weight="700" fill="#3f8f5b">NEXT 下一词</text><text x="884" y="241" font-size="11" fill="#6c7885">复习曲线挑词 · 进度回写 NAS</text>
+</g>
+<g stroke="#6c7885" stroke-width="2" fill="none" marker-end="url(#a3)">
+<path d="M184 231 L214 231"/><path d="M376 231 L406 231"/><path d="M568 231 L598 231"/><path d="M760 231 L790 231"/>
+</g>
+<path d="M884 260 L884 286 L104 286 L104 262" stroke="#3f8f5b" stroke-width="2" fill="none" marker-end="url(#a3)" stroke-dasharray="5 4"/>
+<path d="M296 260 L296 300 L104 300 L104 262" stroke="#e07a3f" stroke-width="2" fill="none" marker-end="url(#a3)" stroke-dasharray="5 4"/>
+<text x="200" y="297" font-size="10.5" fill="#e07a3f">DOWN=不记得：慢速重播 → 回 CARD</text>
+<text x="24" y="322" font-size="11" fill="#6c7885">原则：孩子永远不进菜单、不选单元、不看文字；单元切换由家长在 NAS 网页完成。</text>
+</svg>
+</div>
+
+<h2>4. 屏幕线稿（240×320 竖屏 · 共 7 屏）</h2>
+<div class="phones">
+
+<!-- ① 日常小智界面 -->
+<div class="phone">
+<svg viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="236" height="316" rx="20" fill="#202a33" stroke="#202a33" stroke-width="2.5"/>
+<rect x="14" y="16" width="212" height="288" rx="12" fill="none" stroke="#3d4a55" stroke-dasharray="4 5"/>
+<g font-size="9" fill="#9fb0bd" font-family="monospace"><text x="26" y="34">Wi-Fi</text><text x="196" y="34" text-anchor="end">86%</text></g>
+<rect x="184" y="24" width="22" height="11" rx="2" fill="none" stroke="#9fb0bd" stroke-width="1.4"/><rect x="186" y="26" width="16" height="7" fill="#9fb0bd"/><rect x="207" y="27" width="2" height="5" fill="#9fb0bd"/>
+<g stroke="#7fd4c8" stroke-width="3.4" fill="none" stroke-linecap="round">
+<circle cx="120" cy="140" r="52"/><circle cx="102" cy="130" r="4.5" fill="#7fd4c8"/><circle cx="138" cy="130" r="4.5" fill="#7fd4c8"/><path d="M104 156 Q120 170 136 156"/>
+</g>
+<g stroke="#e07a3f" stroke-width="2.4" stroke-linecap="round"><path d="M112 206 l0 8"/><path d="M120 202 l0 16"/><path d="M128 206 l0 8"/></g>
+<rect x="34" y="230" width="172" height="34" rx="9" fill="#2d3a45" stroke="#3d4a55"/>
+<text x="120" y="251" font-size="10.5" text-anchor="middle" fill="#cbd6df" font-family="monospace">你好呀，我是小智</text>
+<rect x="52" y="276" width="136" height="20" rx="10" fill="#2d3a45"/>
+<text x="120" y="290" font-size="9.5" text-anchor="middle" fill="#9fb0bd" font-family="monospace">OK 开始对话</text>
+</svg>
+<div class="cap"><b>① 日常小智界面</b><span class="tag new">新增</span> 原固件原样保留：深色圆角、动态形象、声音驱动嘴型、电量。<b>OK 长按呼出菜单</b>（v0.3.1 校订）。</div>
+</div>
+
+<!-- ② 菜单：单词模式置顶为第一项 -->
+<div class="phone">
+<svg viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="236" height="316" rx="20" fill="#fbfaf6" stroke="#202a33" stroke-width="2.5"/>
+<text x="24" y="38" font-size="13" font-weight="700" fill="#202a33">菜单</text>
+<line x1="20" y1="48" x2="220" y2="48" stroke="#d5dce2"/>
+<rect x="16" y="56" width="208" height="32" rx="8" fill="#fff4ea" stroke="#e07a3f" stroke-width="2.2"/>
+<circle cx="32" cy="72" r="7" fill="none" stroke="#e07a3f" stroke-width="2"/><path d="M32 67 L32 72 L35 74" stroke="#e07a3f" stroke-width="1.6" fill="none"/>
+<text x="48" y="77" font-size="11.5" font-weight="700" fill="#e07a3f" font-family="monospace">单词模式</text>
+<text x="204" y="77" font-size="9" text-anchor="end" fill="#e07a3f" font-family="monospace">OK</text>
+<g font-size="11" fill="#6c7885" font-family="monospace">
+<text x="24" y="112">重新配网</text><text x="24" y="136">调整音量</text><text x="24" y="160">打断方式</text><text x="24" y="184">智能体设置</text><text x="24" y="208">屏幕亮度</text><text x="24" y="232">休眠时间</text>
+</g>
+<text x="24" y="266" font-size="11" fill="#6c7885" font-family="monospace">返回</text>
+<line x1="20" y1="280" x2="220" y2="280" stroke="#d5dce2" stroke-dasharray="4 5"/>
+<text x="120" y="296" font-size="9" text-anchor="middle" fill="#9aa7b2" font-family="monospace">默认高亮第 1 项 · OK 直接进入</text>
+<text x="120" y="310" font-size="8.5" text-anchor="middle" fill="#9aa7b2" font-family="monospace">在单词模式呼出时首项变为「返回小智」</text>
+</svg>
+<div class="cap"><b>② 右侧菜单（单词模式置顶）</b><span class="tag new">v0.3 已调整</span> 放在<b>第一项且默认高亮</b>：长按 OK 呼出后按一下 OK 即进入，两步到位。菜单给家长用，可带文字；单词模式内部全图标。</div>
+</div>
+
+<!-- ③ 主屏 缩小按钮 -->
+<div class="phone">
+<svg viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="236" height="316" rx="20" fill="#fbfaf6" stroke="#202a33" stroke-width="2.5"/>
+<rect x="14" y="16" width="212" height="288" rx="12" fill="none" stroke="#d5dce2" stroke-dasharray="4 5"/>
+<g><circle cx="96" cy="32" r="4" fill="#e07a3f"/><circle cx="112" cy="32" r="4" fill="#e07a3f"/><circle cx="128" cy="32" r="4" fill="none" stroke="#9aa7b2"/><circle cx="144" cy="32" r="4" fill="none" stroke="#9aa7b2"/></g>
+<!-- 放大后的苹果线图，占约 160x160 -->
+<g stroke="#3a4650" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M120 62 C92 48 62 68 62 108 C62 148 88 176 120 176 C152 176 178 148 178 108 C178 68 148 48 120 62 Z"/>
+<path d="M120 62 Q120 44 136 36"/>
+<path d="M120 60 Q136 40 156 44 Q148 60 120 60 Z"/>
+</g>
+<line x1="34" y1="204" x2="206" y2="204" stroke="#d5dce2" stroke-dasharray="4 5"/>
+<!-- 小按钮：各 84x52，合计约屏 11% -->
+<rect x="26" y="230" width="84" height="52" rx="12" fill="#fff4ea" stroke="#e07a3f" stroke-width="2.2"/>
+<rect x="130" y="230" width="84" height="52" rx="12" fill="#eef4fb" stroke="#4a7fb5" stroke-width="2.2"/>
+<g stroke="#e07a3f" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="translate(54,238) scale(.62)"><path d="M8 56 L8 30 Q8 25 13 25 L17 25 L17 9 Q17 3 23 3 Q29 3 29 9 L29 27 L37 29 Q45 31 45 41 L45 51 Q45 56 40 56 Z"/><path d="M8 56 L45 56"/></g>
+<text x="172" y="266" font-size="34" font-weight="700" text-anchor="middle" fill="#4a7fb5" font-family="Georgia,serif">?</text>
+<g font-size="9" fill="#6c7885" font-family="monospace" text-anchor="middle"><text x="68" y="298">[ UP ] 认识</text><text x="172" y="298">[ DOWN ] 不记得</text></g>
+<text x="120" y="312" font-size="8.5" text-anchor="middle" fill="#9aa7b2" font-family="monospace">OK 短按=再听 · OK 长按=菜单</text>
+</svg>
+<div class="cap"><b>③ 看图 + 二选一（主屏）</b><span class="tag new">已重画</span> 按钮压到各 84×52，合计约屏 <b>11%</b>（&lt;1/4），线图放大到约 160×160。</div>
+</div>
+
+<!-- ④ 跟读 -->
+<div class="phone">
+<svg viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="236" height="316" rx="20" fill="#fbfaf6" stroke="#202a33" stroke-width="2.5"/>
+<rect x="14" y="16" width="212" height="288" rx="12" fill="none" stroke="#d5dce2" stroke-dasharray="4 5"/>
+<g><circle cx="96" cy="32" r="4" fill="#e07a3f"/><circle cx="112" cy="32" r="4" fill="#e07a3f"/><circle cx="128" cy="32" r="4" fill="#4a7fb5"/><circle cx="144" cy="32" r="4" fill="none" stroke="#9aa7b2"/></g>
+<g stroke="#9aa7b2" stroke-width="2" fill="none" transform="translate(96,50) scale(.42)"><path d="M120 62 C92 48 62 68 62 108 C62 148 88 176 120 176 C152 176 178 148 178 108 C178 68 148 48 120 62 Z"/><path d="M120 62 Q120 44 136 36"/></g>
+<g stroke="#4a7fb5" stroke-width="3.2" fill="none" stroke-linecap="round"><rect x="104" y="116" width="32" height="56" rx="16"/><path d="M88 150 A32 32 0 0 0 152 150"/><line x1="120" y1="182" x2="120" y2="198"/><line x1="104" y1="198" x2="136" y2="198"/></g>
+<g stroke="#4a7fb5" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".65"><path d="M74 130 Q64 150 74 170"/><path d="M62 120 Q46 150 62 180"/><path d="M166 130 Q176 150 166 170"/><path d="M178 120 Q194 150 178 180"/></g>
+<g fill="#e07a3f"><circle cx="104" cy="236" r="5"/><circle cx="120" cy="236" r="5" opacity=".6"/><circle cx="136" cy="236" r="5" opacity=".3"/></g>
+<text x="120" y="270" font-size="10" text-anchor="middle" fill="#6c7885" font-family="monospace">正在听…</text>
+<text x="120" y="290" font-size="9" text-anchor="middle" fill="#9aa7b2" font-family="monospace">说完按 OK 或静音 2 秒</text>
+<text x="120" y="306" font-size="9" text-anchor="middle" fill="#9aa7b2" font-family="monospace">OK 长按 = 菜单 → 返回小智</text>
+</svg>
+<div class="cap"><b>④ 跟读</b>复用在线服务的 ASR；转写文本 <code>stt</code> 回到设备后本地判定，不需要任何服务端改动。</div>
+</div>
+
+<!-- ⑤ 读对 -->
+<div class="phone">
+<svg viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="236" height="316" rx="20" fill="#fbfaf6" stroke="#202a33" stroke-width="2.5"/>
+<rect x="14" y="16" width="212" height="288" rx="12" fill="none" stroke="#d5dce2" stroke-dasharray="4 5"/>
+<g><circle cx="96" cy="32" r="4" fill="#3f8f5b"/><circle cx="112" cy="32" r="4" fill="#3f8f5b"/><circle cx="128" cy="32" r="4" fill="#3f8f5b"/><circle cx="144" cy="32" r="4" fill="none" stroke="#9aa7b2"/></g>
+<g stroke="#3f8f5b" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="translate(78,90) scale(1.9)"><path d="M8 56 L8 30 Q8 25 13 25 L17 25 L17 9 Q17 3 23 3 Q29 3 29 9 L29 27 L37 29 Q45 31 45 41 L45 51 Q45 56 40 56 Z"/><path d="M8 56 L45 56"/></g>
+<g fill="#e0a83f"><path d="M42 96 l3 7 8 1 -6 5 2 8 -7 -4 -7 4 2 -8 -6 -5 8 -1z"/><path d="M196 118 l2.5 6 7 1 -5 4.5 1.5 7 -6 -3.5 -6 3.5 1.5 -7 -5 -4.5 7 -1z"/><path d="M52 196 l2 5 6 1 -4.5 4 1 6 -5 -3 -5 3 1 -6 -4.5 -4 6 -1z"/><path d="M190 196 l2 5 6 1 -4.5 4 1 6 -5 -3 -5 3 1 -6 -4.5 -4 6 -1z"/></g>
+<rect x="52" y="262" width="136" height="26" rx="13" fill="#eaf5ee" stroke="#b9ddc5"/><text x="120" y="279" font-size="10.5" text-anchor="middle" fill="#3f8f5b" font-family="monospace">读对啦 · 自动下一个</text>
+<text x="120" y="306" font-size="9" text-anchor="middle" fill="#9aa7b2" font-family="monospace">任何键可提前跳过</text>
+</svg>
+<div class="cap"><b>⑤ 读对了</b>只给正反馈，1.5 秒自动进下一词，不需要孩子操作。</div>
+</div>
+
+<!-- ⑥ 再听一次 -->
+<div class="phone">
+<svg viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="236" height="316" rx="20" fill="#fbfaf6" stroke="#202a33" stroke-width="2.5"/>
+<rect x="14" y="16" width="212" height="288" rx="12" fill="none" stroke="#d5dce2" stroke-dasharray="4 5"/>
+<g><circle cx="96" cy="32" r="4" fill="#e07a3f"/><circle cx="112" cy="32" r="4" fill="#e07a3f"/><circle cx="128" cy="32" r="4" fill="#e07a3f"/><circle cx="144" cy="32" r="4" fill="none" stroke="#9aa7b2"/></g>
+<g stroke="#4a7fb5" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M112 94 C86 94 78 114 78 134 C78 154 90 168 106 168 C116 168 122 162 122 152 C122 144 116 140 110 140 C104 140 100 144 100 150"/>
+<path d="M112 94 C138 94 148 114 148 136"/><path d="M156 188 A44 44 0 1 1 128 150"/>
+</g>
+<path d="M150 176 L160 190 L143 193 Z" fill="#4a7fb5"/>
+<g stroke="#e07a3f" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="translate(96,212)"><path d="M0 8 L12 8 L22 0 L22 28 L12 20 L0 20 Z"/><path d="M30 8 Q36 14 30 20"/><path d="M38 2 Q48 14 38 26"/></g>
+<rect x="46" y="262" width="148" height="26" rx="13" fill="#eef4fb" stroke="#bcd6ee"/><text x="120" y="279" font-size="10.5" text-anchor="middle" fill="#4a7fb5" font-family="monospace">再听一次，慢慢来</text>
+<text x="120" y="306" font-size="9" text-anchor="middle" fill="#9aa7b2" font-family="monospace">不出现叉 / 红 / 失败字样</text>
+</svg>
+<div class="cap"><b>⑥ 没读对 / 不记得</b>耳朵 + 循环箭头 + 喇叭，慢速重播后回主屏。刻意不设计任何失败符号。</div>
+</div>
+
+<!-- ⑦ 问小智 -->
+<div class="phone">
+<svg viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="236" height="316" rx="20" fill="#202a33" stroke="#202a33" stroke-width="2.5"/>
+<rect x="14" y="16" width="212" height="288" rx="12" fill="none" stroke="#3d4a55" stroke-dasharray="4 5"/>
+<rect x="30" y="28" width="180" height="34" rx="10" fill="#2d3a45" stroke="#3d4a55"/>
+<g stroke="#e07a3f" stroke-width="1.8" fill="none" transform="translate(34,30) scale(.28)"><path d="M120 62 C92 48 62 68 62 108 C62 148 88 176 120 176 C152 176 178 148 178 108 C178 68 148 48 120 62 Z"/></g>
+<text x="88" y="50" font-size="12" fill="#e6edf3" font-family="monospace">apple · 正在讲</text>
+<g stroke="#7fd4c8" stroke-width="3.4" fill="none" stroke-linecap="round"><circle cx="120" cy="150" r="52"/><circle cx="102" cy="140" r="4.5" fill="#7fd4c8"/><circle cx="138" cy="140" r="4.5" fill="#7fd4c8"/><path d="M104 166 Q120 180 136 166"/></g>
+<g stroke="#e07a3f" stroke-width="2.6" stroke-linecap="round"><path d="M112 216 l0 12"/><path d="M120 212 l0 20"/><path d="M128 216 l0 12"/><path d="M136 219 l0 6"/><path d="M104 219 l0 6"/></g>
+<text x="120" y="262" font-size="10.5" text-anchor="middle" fill="#9fb0bd" font-family="monospace">"苹果是圆圆的、红红的…"</text>
+<rect x="66" y="278" width="108" height="16" rx="8" fill="#2d3a45"/><text x="120" y="290" font-size="9" text-anchor="middle" fill="#9fb0bd" font-family="monospace">OK 短按 = 回到单词</text>
+</svg>
+<div class="cap"><b>⑦ 问小智（临时切回对话态）</b>顶部保留单词缩略给家长看，小智用 6 岁能懂的话讲，讲完自动回单词模式。</div>
+</div>
+
+</div>
+<div class="legend">
+<span><i style="background:#e07a3f"></i>UP / 认识 / 暖色</span>
+<span><i style="background:#4a7fb5"></i>DOWN / 不记得 / 冷色</span>
+<span><i style="background:#3f8f5b"></i>读对了</span>
+<span>虚线框 = 草图占位，实线 = 最终绘制元素</span>
+</div>
+
+<div class="callout blue">
+<b>按键总表（v0.3.1 · 已按真实固件校订）：</b><br>
+日常小智态：OK 短按 = 开始/结束对话　·　<b>OK 长按 = 呼出菜单</b>　·　菜单默认高亮<b>第 1 项「单词模式」</b>，再按一下 OK 即进入（两步到位）<br>
+单词模式：UP 短按 = 认识（拇指）　·　DOWN 短按 = 不记得（问号）　·　OK 短按 = 再听 / 结束跟读 / 跳过结果　·　<b>OK 长按 = 呼出菜单</b>（此时首项动态变为「返回小智」，OK 一下即回小智对话态）<br>
+两种模式共用「<b>OK 长按呼出菜单</b>」这一个心智，且<b>首项随当前模式动态变化</b>，进和出都是两步；孩子平时只碰短按，永远不进菜单、不选单元、不看文字。<br>
+<span style="color:#c0503f"><b>校订说明：</b></span>真实固件 <code>XIAOZHI_BUILD.txt</code> 第 4 条为「对话页长按确认打开菜单」，故把 v0.3 的「DOWN 键长按呼菜单 + OK 键长按问小智」两个长按键合并为长按 OK 一个；「问小智」经菜单首项「返回小智」回对话页口头问（P0 降级，P1/P2 再做讲完自动回）。此条<b>已确认定稿</b>（保留回退开关：改 <code>app.c</code> 一处判断即可）。详见 <code>/workspace/p0-prd.md</code> §0.1。
+</div>
+
+<h2>5. 线图方案（按钮缩小后，图反而更清楚）</h2>
+<p>你提到的「AI 针对幼儿园生成简单线图」方向对，但<b>不要让 AI 输出位图</b>。一张 240×320 RGB565 位图约 150 KiB，而一幅简笔线图的指令串只要 <b>100–400 字节</b>，相差约 500 倍。按钮压到 1/4 屏以内后，绘图区从原来的约 100×100 放大到约 <b>160×160</b>，线条辨识度对 6 岁孩子更友好。</p>
+
+<h3>5.1 笔画指令格式（v0.2 简化：只画直线和圆，曲线用折线近似）</h3>
+<pre><span class="c">// 每条 5 字节，坐标归一化 0..200，绘制时线性映射到屏幕绘图区</span>
+<span class="c">// [opcode:1][x1:1][y1:1][x2:1][y2:1]</span>
+OP_LINE   = 1   <span class="c">// (x1,y1) → (x2,y2)</span>
+OP_CIRCLE = 2   <span class="c">// 圆心 (x1,y1)，半径 x2</span>
+OP_RECT   = 3   <span class="c">// 对角 (x1,y1)-(x2,y2)</span>
+OP_DOT    = 4   <span class="c">// 实心点 (x1,y1)，半径 x2（画眼睛、斑点）</span>
+OP_END    = 255
+
+<span class="c">// 一个词：magic(2) + stroke_count(1) + n×5 B</span>
+<span class="c">// apple ≈ 17 笔 ≈ 88 B；20 词的整个单元线图 ≈ 1.8 KiB</span>
+<span class="c">// 曲线（苹果轮廓、月牙、云朵）由备课脚本扁平成 8~12 段短 LINE，</span>
+<span class="c">// 所以设备端渲染器连 arc 都不用实现，只要 lv_line + 画圆。</span></pre>
+<p class="note">已生成 <code>/workspace/words/lineart/apple.strokes.json</code> 作为可读示例；打包脚本会把它转成上面的 5 字节二进制。<b>生成曲线 → 折线扁平化</b>这一步放在 NAS 侧，设备零解析负担。</p>
+
+<h3>5.2 备课流水线（NAS 上离线跑，不在设备上）</h3>
+<table>
+<tr><th style="width:52px">步</th><th>做什么</th><th>产出</th></tr>
+<tr><td>1</td><td>家长在 NAS 网页选单元（词表已生成 6 个单元，见第 10 节）</td><td><code>words/unit-0X-*.json</code></td></tr>
+<tr><td>2</td><td>LLM 按「6 岁简笔画、单色、≤25 笔、只用直线圆点、无文字无阴影」的约束，按每个词的 <code>draw</code> 描述输出笔画；曲线自动扁平化</td><td><code>lineart/*.svg</code>（人可预览）+ <code>*.bin</code></td></tr>
+<tr><td>3</td><td>脚本校验：笔画上限、坐标越界、是否为封闭轮廓、家长肉眼过一遍「这像不像苹果」</td><td>校验通过的 <code>*.bin</code></td></tr>
+<tr><td>4</td><td>TTS 预生成发音（正常 + 慢速两版），压成 Opus，约 2–4 KiB/词</td><td><code>audio/*.opus</code></td></tr>
+<tr><td>5</td><td>打包成单元包（TLV + CRC）发布；设备 Wi-Fi 空闲时一次拉取，<b>只把当前词和下一词留在 RAM</b></td><td><code>packs/unit-01.bin</code> ≈ 60–80 KiB</td></tr>
+</table>
+<div class="callout"><b>AI 在这里是「备课工具」，不是「运行时依赖」</b>——6 岁词表是固定集合，一次性生成、家长能预览和改，质量可控；设备断网时照样能玩。这条边界比「每次问 AI 现画」更省延迟、更省内存，也不会画出孩子认不出的东西。</div>
+
+<h2>6. 三种存放策略</h2>
+<table>
+<tr><th style="width:110px">方案</th><th>优点</th><th>代价</th><th>结论</th></tr>
+<tr><td><b>A 编译进固件</b></td><td>完全离线、最稳；该固件字库就是 Flash 只读映射、不占 RAM</td><td>换词要重新刷固件（AI Passport 一次只能装一个固件）</td><td><span class="tag">兜底</span> 内置 8–10 张保底图</td></tr>
+<tr><td><b>B NAS 按单元下发</b><br><code>/vol1/1000/vvvv/words</code></td><td>换词表不刷机；家长网页点一下就换；词量不受 Flash 限制；进度可回写</td><td>依赖局域网；需写 HTTP 客户端与缓存管理</td><td><span class="tag y">主路径 · 你已选定</span></td></tr>
+<tr><td><b>C 实时 AI 生成</b></td><td>理论上无限词汇</td><td>延迟高、结果不可控、断网即瘫；C3 没有余量做缓冲</td><td><span class="tag n">不做运行时</span></td></tr>
+</table>
+<p>开机先显示上一次缓存的单元，后台静默拉新包；NAS 不可达时自动切内置保底图 + 本地进度，孩子完全无感。发音同理：优先播 NAS 预生成的 Opus（稳定、零延迟），失败时回退到小智在线 TTS。</p>
+
+<h2>7. 只取 wordmemory 的哪一部分</h2>
+<div class="grid2">
+<div class="card"><h3 style="margin-top:0">要（内核）</h3>
+<table style="margin:0">
+<tr><td><code>model/word.js</code></td><td>裁成 <code>word / cn / say / draw / unit / lineart / audio</code></td></tr>
+<tr><td><code>model/progress.js</code></td><td><code>status / score / reviewAt / repeatCount</code> + 简版复习曲线</td></tr>
+<tr><td><code>generateDetails</code></td><td>改成「生成笔画指令 + 6 岁能懂的中文短句」</td></tr>
+<tr><td><code>image.generate</code></td><td>改成「生成 / 校验线图」</td></tr>
+</table></div>
+<div class="card"><h3 style="margin-top:0">不要</h3>
+<table style="margin:0">
+<tr><td>JWT / 邮箱验证码 / 多用户</td><td>单设备单小孩，Device-Id 当 key</td></tr>
+<tr><td>Vue 3 + Vant + PWA</td><td>换成 NAS 上极简家长页</td></tr>
+<tr><td>拍照识别 / 七牛云</td><td>孩子用不到；图片全换矢量</td></tr>
+<tr><td>Egg.js + MongoDB 全家桶</td><td>60 词规模用 JSON / SQLite 足够</td></tr>
+</table></div>
+</div>
+
+<h2>8. 「AI 判断读得对不对」— 在线服务器下的做法 <span class="tag new">已重做</span></h2>
+<p>用 xiaozhi.me 就没有 <code>custom</code> 回传，但协议里服务端<b>本来就会把 ASR 转写文本通过 <code>type:stt</code> 下发到设备显示字幕</b>。设备拿到这段文字后，本地比对目标词即可——不需要改服务端、不需要自建、不需要额外一次 LLM 调用。</p>
+<table>
+<tr><th style="width:70px">环节</th><th>做法</th></tr>
+<tr><td>上行</td><td>按 OK → 设备发 <code>listen:start</code> + Opus 音频（<b>原固件链路，零改动</b>）</td></tr>
+<tr><td>ASR</td><td>在线服务转写，下发 <code>{"type":"stt","text":"appo"}</code></td></tr>
+<tr><td>判定</td><td>设备本地：小写化 → 去空格标点 → 折叠重复字母 → 与目标词算编辑距离（≤2）或前缀匹配（长度≥3）；再加一张<b>童音宽容表</b>（<code>appo / apo / aplo → apple</code>）。约 30 行 C、几百字节</td></tr>
+<tr><td>反馈</td><td>显示 ⑤ 或 ⑥ + 播放本地预录鼓励音；随后发 <code>abort</code> 掐掉本轮 TTS，避免小智说出和屏幕图案矛盾的话</td></tr>
+<tr><td>兜底</td><td><code>stt</code> 未下发、文本为空、转成中文 → 一律显示「再听一次」，<b>不判错、不扣分</b></td></tr>
+<tr><td>进度</td><td>本地 NVS 记录 <code>status / score / reviewAt</code>，联网时批量回写 NAS</td></tr>
+</table>
+<pre><span class="c">// 在线服务 → 设备（设备本来就收得到，用于字幕）</span>
+{ <span class="k">"session_id"</span>:<span class="s">"..."</span>, <span class="k">"type"</span>:<span class="s">"stt"</span>, <span class="k">"text"</span>:<span class="s">"appo"</span> }
+{ <span class="k">"session_id"</span>:<span class="s">"..."</span>, <span class="k">"type"</span>:<span class="s">"llm"</span>, <span class="k">"emotion"</span>:<span class="s">"happy"</span>, <span class="k">"text"</span>:<span class="s">"😀"</span> }
+
+<span class="c">// 设备 → 在线服务：跟读结束，掐掉本轮回复</span>
+{ <span class="k">"session_id"</span>:<span class="s">"..."</span>, <span class="k">"type"</span>:<span class="s">"abort"</span>, <span class="k">"reason"</span>:<span class="s">"word_eval_done"</span> }
+
+<span class="c">// 「问小智」上下文注入尝试（需实机验证，见第 13 节）</span>
+{ <span class="k">"type"</span>:<span class="s">"listen"</span>, <span class="k">"state"</span>:<span class="s">"detect"</span>, <span class="k">"text"</span>:<span class="s">"单词模式 apple 用六岁小朋友能懂的话讲一下"</span> }</pre>
+<div class="callout green"><b>这样反而更好：</b>零额外服务、零 token、零云端延迟、不用碰官方服务端配置；精度靠「宽容表 + 只给正反馈」兜住——判不准就再听一次，孩子不会受挫。<b>将来若想要 LLM 级童音复判，只要换 <code>word_proto.c</code> 一层接自建服务端即可，其余代码不动。</b></div>
+<div class="callout red"><b>诚实的代价：</b>没有 LLM 二判，遇到发音很不标准时可能把「读对了」判成「再听一次」。对 6 岁场景这是可接受的——因为反馈不是「你错了」，而是「再听一次，慢慢来」。另外 ASR 偶尔会把英语单词听成中文，同样落到兜底分支。</div>
+
+<h2>9. 内存预算（估算，需实机 <code>heap_caps_get_free_size</code> 复核）</h2>
+<table>
+<tr><th>项目</th><th>估算</th><th>说明</th></tr>
+<tr><td>一张 240×320 RGB565 全屏位图</td><td><b>~150 KiB</b></td><td>❌ 直接否决，这就是必须用笔画指令的根本原因</td></tr>
+<tr><td>当前词 + 下一词的线图指令</td><td>&lt; 1 KiB</td><td>2 × ~300 B</td></tr>
+<tr><td>单元元数据（10–20 词索引）</td><td>~2 KiB</td><td>常驻或按需读取</td></tr>
+<tr><td>单个发音 Opus 播放缓冲</td><td>~4 KiB</td><td>播完即释放</td></tr>
+<tr><td>LVGL 7 个页面对象 + 小图标</td><td>~14–20 KiB</td><td>页面复用，不重复创建；按钮变小后对象更少</td></tr>
+<tr><td>HTTP 客户端 + 分块接收窗口</td><td>~8 KiB</td><td>分块拉取，避免一次性 80 KiB 缓冲</td></tr>
+<tr><td><b>新增合计</b></td><td><b>≈ 30–35 KiB</b></td><td>叠加在本就很紧的 C3 heap 上，可行但需逐步实测</td></tr>
+</table>
+<p class="note">该固件已经把字库做成 Flash 只读映射、开机 Logo 用 2,232 B 蒙版直接绘制而不开全屏缓存——这套「不占 RAM」的资源思路正好照搬到线图上。官方主题包上限 920 KiB 也说明 Flash 侧还有空间放保底单元包。</p>
+
+<h2>10. 6 岁词表（已生成，可直接拷到 NAS）</h2>
+<div class="callout blue"><b>把 <code>/workspace/words/</code> 整个目录拷到飞牛 NAS 的 <code>/vol1/1000/vvvv/words</code> 即可。</b>目录里现在有 <code>index.json</code>、6 个 <code>unit-0X-*.json</code>、<code>lineart/apple.strokes.json</code>；<code>lineart/*.bin</code>、<code>audio/*.opus</code>、<code>packs/*.bin</code> 由 P1 的备课脚本生成。</div>
+<table>
+<tr><th style="width:150px">单元</th><th style="width:60px">词数</th><th>词</th></tr>
+<tr><td>01 水果 fruit</td><td>10</td><td>apple, banana, orange, grape, pear, strawberry, watermelon, peach, lemon, cherry</td></tr>
+<tr><td>02 动物 animals</td><td>10</td><td>cat, dog, bird, fish, rabbit, bear, elephant, duck, monkey, tiger</td></tr>
+<tr><td>03 颜色与形状</td><td>10</td><td>red, blue, yellow, green, circle, square, triangle, star, heart, rainbow</td></tr>
+<tr><td>04 身体与家人</td><td>10</td><td>hand, eye, nose, mouth, ear, foot, mom, dad, baby, friend</td></tr>
+<tr><td>05 食物 food</td><td>10</td><td>milk, bread, egg, cake, rice, noodle, water, juice, cookie, ice cream</td></tr>
+<tr><td>06 自然与交通</td><td>10</td><td>sun, moon, cloud, tree, flower, car, bus, bike, boat, plane</td></tr>
+</table>
+<h3>选词原则</h3>
+<ul>
+<li><b>具体可画</b>：每个词都能用 ≤25 笔简笔画表达；抽象词（love / big / happy）一律不收。</li>
+<li><b>音节短</b>：以 1–2 音节为主，仅 strawberry / watermelon / elephant / rainbow / ice cream 等孩子熟词放宽。</li>
+<li><b>颜色词用实物代表</b>：red 画苹果、blue 画云和波浪、yellow 画太阳、green 画叶子——6 岁孩子靠具体物理解颜色，比画一个「涂红的圆」好懂得多。</li>
+<li><b>不教拼写</b>：孩子不识字，屏幕上<b>不显示单词文本</b>。<code>word</code> 字段只给 TTS、给家长、给小智看；「问小智」屏顶部的小字也是给家长看的。</li>
+<li><b>中文不是给孩子读的</b>：<code>cn</code> / <code>say</code> 用于小智语音讲解和家长核对，屏幕上不出现。</li>
+</ul>
+<h3>词条字段</h3>
+<pre>{ <span class="k">"id"</span>:<span class="s">"apple"</span>, <span class="k">"word"</span>:<span class="s">"apple"</span>, <span class="k">"ipa"</span>:<span class="s">"/ˈæpl/"</span>,
+  <span class="k">"cn"</span>:<span class="s">"苹果"</span>, <span class="k">"syllables"</span>:2,
+  <span class="k">"say"</span>:<span class="s">"圆圆的、红红的，咬一口脆脆的"</span>,   <span class="c">// 给小智的 6 岁讲解提示</span>
+  <span class="k">"draw"</span>:<span class="s">"圆润果身 + 顶部短柄 + 一片叶子"</span>,   <span class="c">// 给 AI 生成笔画的描述</span>
+  <span class="k">"strokes_max"</span>:24, <span class="k">"tags"</span>:[<span class="s">"fruit"</span>,<span class="s">"food"</span>] }</pre>
+<p class="note"><code>ipa</code> 仅供家长参考，实际发音一律以 NAS 预生成的 TTS 音频为准（避免手工音标误差影响孩子）。<code>index.json</code> 里还带了生成线图用的统一 prompt 和 opcode 映射表。</p>
+
+<h2>11. 分阶段路线</h2>
+<table>
+<tr><th style="width:64px">阶段</th><th>范围</th><th>依赖</th><th>验收</th></tr>
+<tr><td><b>P0</b></td><td>内置 8–10 词的线图 + 预置发音 + 二选一 + 进度；7 屏 UI 与三键映射定型；日常界面与菜单入口做完</td><td>无，纯离线</td><td>6 岁孩子不看说明能独立玩完一轮；确认小按钮是否仍好认、菜单入口是否顺手</td></tr>
+<tr><td><b>P1</b></td><td>接飞牛 NAS：备课脚本生成 60 词的线图包与发音、单元包下发、进度回写、家长换词表页</td><td>局域网</td><td>换一整个单元<b>不用刷固件</b>；断网自动回退 P0 保底包</td></tr>
+<tr><td><b>P2</b></td><td>跟读（<code>stt</code> 本地比对）+ 问小智（上下文注入）+ 智能体提示词微调</td><td>小智在线服务</td><td>读对/再听一次反馈稳定；小智知道孩子正在看哪个词</td></tr>
+</table>
+<p><b>建议先只做 P0。</b>线稿里最难判断的其实是「两个缩小后的图案 + 三键」对 6 岁孩子是否真的零门槛，这必须拿真机让小朋友按一按才知道；P0 不碰 NAS、不碰服务端、不改协议，最干净。</p>
+
+<h2>12. 已确认（含降级策略）</h2>
+<p>上一轮留下的 3 个待确认项你已回复「可以」，以下按<b>批准设计、降级固化</b>定稿处理。注意：这里的「可以」是认可方案，不等于已实机验证，验证动作放到 P0 / P2 的验收环节。</p>
+<table>
+<tr><th style="width:40px">#</th><th style="width:220px">结论</th><th>落地方式</th><th style="width:210px">若验证不通过</th></tr>
+<tr><td>1</td><td>跟读判定读 <code>stt.text</code>，设备本地比对</td><td><code>word_proto.c</code> 订阅 <code>type:stt</code>，归一化 + 编辑距离 + 童音宽容表；判定后发 <code>abort</code></td><td>该移植版若未把字幕文本交给应用层，退化为「屏幕结果由 <code>llm.emotion</code> 驱动 + 小智语音鼓励」</td></tr>
+<tr><td>2</td><td>「问小智」用 <code>listen.detect.text</code> 注入当前单词</td><td>进入对话态时带 <code>单词模式 apple 用六岁小朋友能懂的话讲一下</code></td><td>在线服务若未透传给 LLM，退化为控制台提示词泛化 + 孩子口头提问</td></tr>
+<tr><td>3</td><td>单元切换只放家长网页，设备端不选单元</td><td>P0 内置保底单元；P1 由 NAS 下发当前单元；孩子不进菜单、不看文字</td><td>若以后需要设备端换单元，再加一屏（会占用一个图案位），P0 后再评估</td></tr>
+</table>
+<div class="callout green"><b>为什么现在就能定稿：</b>三条的降级路径都隔离在 <code>word_proto.c</code> 这一层里，无论实机结果如何，<b>7 屏 UI、状态机、按键映射、词表与线图格式都不用返工</b>。v0.3.1 起 P0 实现清单与工程 PRD 已出，见 <code>/workspace/p0-prd.md</code> / <code>/workspace/p0-prd.html</code>。</div>
+
+<footer>
+框架与线稿 v0.3.1 · 2026-11-09 · 依据 arraylee/ai-passport-xiaozhi-custom（v2.1.0-xiaozhi.18 / ESP-IDF 5.5.3，已核源码：doc/ARCHITECTURE.md、XIAOZHI_BUILD.txt、partitions.csv、各 HAL/服务头文件）、78/xiaozhi-esp32 WebSocket 协议文档、doramart/wordmemory 整理。<br>
+v0.3 变更：单词模式移到菜单第一项并默认高亮；菜单首项随当前模式动态变化；3 个待确认项定稿。<br>
+v0.3.1 校订：菜单呼出键由「DOWN 键长按」改为真实固件的「OK 长按」并合并两个长按键；文件落位改为组件化六边形架构；发音复用现成 ADP1 / <code>adpcm_decode()</code>。工程实现清单见 <code>/workspace/p0-prd.md</code> 与 <code>/workspace/p0-prd.html</code>。<br>
+内存数字为估算，落地前请用实机 <code>heap_caps_get_free_size()</code> 复核；六段镜像与资源分区改动需按该固件 release.py 的校验流程走。
+</footer>
+
+</div>
+</body>
+</html>

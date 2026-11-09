@@ -1,0 +1,56 @@
+{
+  "format": "wordmode-wordlist-v1",
+  "version": "0.2.0",
+  "date": "2026-11-09",
+  "age": 6,
+  "audience": "幼儿园大班 / 一年级，不识字，靠图和声音学习",
+  "nas_root": "/vol1/1000/vvvv/words",
+  "deploy": "把本目录整体拷贝到 nas_root；设备通过 HTTP 拉取 packs/ 下的单元包。lineart/*.bin、audio/*.opus、packs/*.bin 由 P1 备课脚本生成，不在本目录中。",
+  "totals": { "units": 6, "words": 60 },
+  "selection_rules": [
+    "具体可画：每个词都能用不超过 25 笔简笔画表达，抽象词一律不收",
+    "音节短：以 1-2 音节为主，仅孩子熟悉的长词放宽",
+    "颜色词用实物代表：red 画苹果、blue 画云和波浪、yellow 画太阳、green 画叶子",
+    "不教拼写：屏幕上不显示单词文本，word 字段只给 TTS、家长和小智使用",
+    "中文不是给孩子读的：cn / say 用于小智语音讲解和家长核对，屏幕上不出现",
+    "ipa 仅供家长参考，实际发音一律以 NAS 预生成的 TTS 音频为准"
+  ],
+  "word_fields": {
+    "id": "唯一标识，小写连字符，用作文件名",
+    "word": "英文单词，给 TTS / 家长 / 小智用，不显示在孩子界面",
+    "ipa": "音标，仅家长参考",
+    "cn": "中文释义，不显示",
+    "syllables": "音节数",
+    "say": "给小智的一句话讲解提示，必须是 6 岁能懂的口语短句",
+    "draw": "给 AI 生成简笔画笔画指令的描述，约束在 25 笔以内",
+    "strokes_max": "该词允许的最大笔画数",
+    "tags": "主题标签，供复习曲线分组"
+  },
+  "units": [
+    { "id": "unit-01", "file": "unit-01-fruit.json", "title": "水果", "slug": "fruit", "count": 10 },
+    { "id": "unit-02", "file": "unit-02-animals.json", "title": "动物", "slug": "animals", "count": 10 },
+    { "id": "unit-03", "file": "unit-03-colors-shapes.json", "title": "颜色与形状", "slug": "colors-shapes", "count": 10 },
+    { "id": "unit-04", "file": "unit-04-body-family.json", "title": "身体与家人", "slug": "body-family", "count": 10 },
+    { "id": "unit-05", "file": "unit-05-food.json", "title": "食物", "slug": "food", "count": 10 },
+    { "id": "unit-06", "file": "unit-06-nature-transport.json", "title": "自然与交通", "slug": "nature-transport", "count": 10 }
+  ],
+  "lineart": {
+    "format": "wordline-v1",
+    "description": "每条笔画 5 字节：[opcode, x1, y1, x2, y2]，坐标归一化到 0..200，绘制时线性映射到屏幕绘图区（约 160x160）",
+    "opcodes": { "1": "LINE (x1,y1)-(x2,y2)", "2": "CIRCLE 圆心(x1,y1) 半径x2", "3": "RECT 对角(x1,y1)-(x2,y2)", "4": "DOT 实心点(x1,y1) 半径x2", "255": "END" },
+    "word_binary": "magic(2B) + stroke_count(1B) + n*5B",
+    "note": "曲线（苹果轮廓、月牙、云朵）由备课脚本扁平成 8-12 段短 LINE，设备端渲染器只需实现 lv_line 和画圆，不需要 arc。示例见 lineart/apple.strokes.json",
+    "prompt": "你是给 6 岁小朋友画英文单词简笔画的助手。只输出笔画序列，不要输出图片。要求：单色线条、无填充、无文字、无阴影、无背景；每个词不超过 25 笔；只使用直线段、圆、矩形、点四种图元；曲线用 8-12 段短直线近似；所有坐标归一化到 0..200 的整数；图形居中且尽量占满画布；画的是这个单词最典型、孩子一眼能认出的样子。输出 JSON 数组，每项为 [opcode, x1, y1, x2, y2]。"
+  },
+  "pack": {
+    "format": "TLV + CRC32",
+    "content": ["单元元数据", "每个词的笔画指令", "可选的发音 Opus 索引"],
+    "device_cache": "设备只把当前词和下一词留在 RAM，其余按需从 Flash/NVS 读取；断网回退内置 8-10 张保底图",
+    "progress": "status / score / reviewAt / repeatCount，本地 NVS 记录，联网时批量回写 words/progress.json"
+  },
+  "runtime": {
+    "voice": "小智在线服务 xiaozhi.me，不自建服务端；跟读判定读 type:stt 的转写文本后在设备本地比对",
+    "data": "飞牛 NAS 局域网 HTTP，路径 nas_root",
+    "dsh": "不使用"
+  }
+}

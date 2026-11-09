@@ -1,0 +1,34 @@
+diff --git a/components/core/services/CMakeLists.txt b/components/core/services/CMakeLists.txt
+--- a/components/core/services/CMakeLists.txt
++++ b/components/core/services/CMakeLists.txt
+@@ SRCS 列表末尾追加两个纯逻辑源文件（不含任何 IDF / LVGL 头）
+         "src/play_runtime.c"
+         "src/avatar_pack.c"
+-        "src/profile_bcast.c" "src/profile_batch_bcast.c"
++        "src/profile_bcast.c" "src/profile_batch_bcast.c"
++        "src/word_mode.c" "src/wordline.c"
+     INCLUDE_DIRS "include"
+     REQUIRES ports json)
+
+diff --git a/components/ui/presentation/CMakeLists.txt b/components/ui/presentation/CMakeLists.txt
+--- a/components/ui/presentation/CMakeLists.txt
++++ b/components/ui/presentation/CMakeLists.txt
+@@ SRCS 列表追加表现层源文件
+-         "src/ui_xiaozhi.c" "src/ui_plays.c" "src/bobo_art.c"
++         "src/ui_xiaozhi.c" "src/ui_plays.c" "src/bobo_art.c"
++         "src/ui_wordmode.c"
+@@ 资产头在 app 组件下，需把它加进私有 include 路径
+-    PRIV_INCLUDE_DIRS "${companion_dir}"
++    PRIV_INCLUDE_DIRS "${companion_dir}"
++                      "${PROJECT_DIR}/components/app/src/assets"
+     REQUIRES services lvgl xiaozhi
+
+说明：
+  1. p0_pack.h / p0_audio.h 全部是 static const，落在 .rodata 由 ESP-IDF 默认
+     映射 Flash（XIP），不占 SRAM；无需 EMBED_FILES、无需改 partitions.csv。
+  2. word_mode.c / wordline.c 进 services 组件，保持「纯 C、可 PC 单测」的分层。
+  3. 不要给 presentation 增加对 app 组件的 REQUIRES（会成环）；仅用
+     PRIV_INCLUDE_DIRS 暴露头文件路径即可。
+  4. app 组件需能 include "app/wordmode_app.h"，其 INCLUDE_DIRS 本来就是
+     "include"，新增头文件放在 include/app/ 下即自动可见，无需改 CMakeLists。
+  5. 若上游 SRCS 列表格式略有不同，按「在列表末尾追加文件名」等价处理。

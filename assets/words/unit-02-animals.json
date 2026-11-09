@@ -1,0 +1,18 @@
+{
+  "id": "unit-02",
+  "title": "动物",
+  "slug": "animals",
+  "age": 6,
+  "words": [
+    { "id": "cat", "word": "cat", "ipa": "/kæt/", "cn": "猫", "syllables": 1, "say": "喵喵叫，有两只尖耳朵和长胡须", "draw": "圆脸 + 两个三角耳 + 两只点眼 + 左右各两条胡须", "strokes_max": 20, "tags": ["animal"] },
+    { "id": "dog", "word": "dog", "ipa": "/dɒɡ/", "cn": "狗", "syllables": 1, "say": "汪汪叫，会摇尾巴", "draw": "圆脸 + 两只下垂的耳朵 + 一个圆鼻子 + 一条弯尾", "strokes_max": 20, "tags": ["animal"] },
+    { "id": "bird", "word": "bird", "ipa": "/bɜːd/", "cn": "鸟", "syllables": 1, "say": "有翅膀会飞，嘴巴尖尖的", "draw": "椭圆身体 + 三角喙 + 一道翅膀弧 + 一只点眼 + 两条细腿", "strokes_max": 22, "tags": ["animal"] },
+    { "id": "fish", "word": "fish", "ipa": "/fɪʃ/", "cn": "鱼", "syllables": 1, "say": "在水里游来游去，有大尾巴", "draw": "椭圆身体 + 三角尾鳍 + 一只点眼 + 一条背鳍线", "strokes_max": 18, "tags": ["animal"] },
+    { "id": "rabbit", "word": "rabbit", "ipa": "/ˈræbɪt/", "cn": "兔子", "syllables": 2, "say": "长长耳朵，蹦蹦跳跳", "draw": "圆脸 + 两根竖起的长椭圆耳 + 两只点眼 + 一个小圆鼻", "strokes_max": 22, "tags": ["animal"] },
+    { "id": "bear", "word": "bear", "ipa": "/beə(r)/", "cn": "熊", "syllables": 1, "say": "大大的、圆圆的耳朵，喜欢抱抱", "draw": "一个大圆头 + 两个小圆耳 + 两只点眼 + 一个椭圆口鼻", "strokes_max": 20, "tags": ["animal"] },
+    { "id": "elephant", "word": "elephant", "ipa": "/ˈelɪfənt/", "cn": "大象", "syllables": 3, "say": "长长的鼻子，大大的耳朵", "draw": "大头 + 两片大耳 + 一条向下卷的长鼻 + 两只点眼 + 两根短牙", "strokes_max": 25, "tags": ["animal"] },
+    { "id": "duck", "word": "duck", "ipa": "/dʌk/", "cn": "鸭子", "syllables": 1, "say": "扁扁嘴，嘎嘎叫，会游泳", "draw": "圆身体 + 扁扁的喙 + 一只点眼 + 一道小翅膀 + 两条水波线", "strokes_max": 22, "tags": ["animal"] },
+    { "id": "monkey", "word": "monkey", "ipa": "/ˈmʌŋki/", "cn": "猴子", "syllables": 2, "say": "长尾巴，爱爬树，爱香蕉", "draw": "圆脸 + 两只圆耳 + 一个浅色椭圆脸区 + 一条卷曲长尾", "strokes_max": 25, "tags": ["animal"] },
+    { "id": "tiger", "word": "tiger", "ipa": "/ˈtaɪɡə(r)/", "cn": "老虎", "syllables": 2, "say": "身上有一条一条的花纹", "draw": "圆脸 + 两个三角耳 + 两只点眼 + 额头和脸颊共 5 条短纹", "strokes_max": 24, "tags": ["animal"] }
+  ]
+}

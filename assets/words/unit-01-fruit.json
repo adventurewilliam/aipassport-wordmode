@@ -1,0 +1,18 @@
+{
+  "id": "unit-01",
+  "title": "水果",
+  "slug": "fruit",
+  "age": 6,
+  "words": [
+    { "id": "apple", "word": "apple", "ipa": "/ˈæpl/", "cn": "苹果", "syllables": 2, "say": "圆圆的、红红的，咬一口脆脆的", "draw": "圆润的果身 + 顶部一根短柄 + 一片斜着的叶子", "strokes_max": 24, "tags": ["fruit", "food"] },
+    { "id": "banana", "word": "banana", "ipa": "/bəˈnɑːnə/", "cn": "香蕉", "syllables": 3, "say": "弯弯的、黄黄的，剥开皮就能吃", "draw": "两条同向的长弧线围成弯月形，两端用小短线封口", "strokes_max": 24, "tags": ["fruit", "food"] },
+    { "id": "orange", "word": "orange", "ipa": "/ˈɒrɪndʒ/", "cn": "橙子", "syllables": 2, "say": "圆圆的橙色的，剥开是一瓣一瓣的", "draw": "一个圆 + 顶部小蒂 + 圆内一条弧线表示分瓣", "strokes_max": 22, "tags": ["fruit", "food", "color"] },
+    { "id": "grape", "word": "grape", "ipa": "/ɡreɪp/", "cn": "葡萄", "syllables": 1, "say": "一串小小的、紫紫的，一颗一颗", "draw": "6 到 8 个小圆堆成倒三角串 + 顶部一片叶子", "strokes_max": 24, "tags": ["fruit", "food"] },
+    { "id": "pear", "word": "pear", "ipa": "/peə(r)/", "cn": "梨", "syllables": 1, "say": "上面小下面大，像个胖葫芦", "draw": "上窄下宽的葫芦形轮廓 + 顶部短柄", "strokes_max": 24, "tags": ["fruit", "food"] },
+    { "id": "strawberry", "word": "strawberry", "ipa": "/ˈstrɔːbəri/", "cn": "草莓", "syllables": 3, "say": "红红的，身上有好多小点点", "draw": "倒心形果身 + 顶部叶冠 + 果身上 5 到 6 个小点", "strokes_max": 25, "tags": ["fruit", "food"] },
+    { "id": "watermelon", "word": "watermelon", "ipa": "/ˈwɔːtəmelən/", "cn": "西瓜", "syllables": 4, "say": "大大的绿皮，切开里面红红的", "draw": "一个大椭圆 + 表面 3 条波浪纹；或一块三角形切块带弧边", "strokes_max": 25, "tags": ["fruit", "food"] },
+    { "id": "peach", "word": "peach", "ipa": "/piːtʃ/", "cn": "桃子", "syllables": 1, "say": "粉粉的，中间有一条浅浅的线", "draw": "近心形圆润果身 + 中间一条竖弧 + 一片叶子", "strokes_max": 24, "tags": ["fruit", "food"] },
+    { "id": "lemon", "word": "lemon", "ipa": "/ˈlemən/", "cn": "柠檬", "syllables": 2, "say": "黄黄的，两头尖尖，尝一口酸酸的", "draw": "横向椭圆两端各带一个小尖 + 顶部小蒂", "strokes_max": 22, "tags": ["fruit", "food", "color"] },
+    { "id": "cherry", "word": "cherry", "ipa": "/ˈtʃeri/", "cn": "樱桃", "syllables": 2, "say": "两颗红红的小圆，共用一根细柄", "draw": "两个小圆并排 + 两条向上汇合的细柄 + 一片小叶", "strokes_max": 20, "tags": ["fruit", "food"] }
+  ]
+}

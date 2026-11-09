@@ -1,0 +1,284 @@
+{
+  "format": "wordmode-audio-v1",
+  "stage": "P0",
+  "voice": "en-US-AnaNeural",
+  "engine": "edge-tts + ffmpeg/libopus",
+  "sample_rate": 16000,
+  "channels": 1,
+  "codec": "opus",
+  "bitrate": "16k",
+  "note": "normal=看图自动播；slow=不记得/再听一次时慢速重播。文件放 main/assets/audio/ 编进 Flash，或由 P1 备课脚本下发。",
+  "files": {
+    "apple": {
+      "normal": {
+        "file": "apple.opus",
+        "bytes": 1772,
+        "duration_s": 1.494,
+        "adp1": {
+          "file": "apple.adp1",
+          "bytes": 11916,
+          "samples": 23808,
+          "decode_mae": 23.6,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      },
+      "slow": {
+        "file": "apple_slow.opus",
+        "bytes": 2416,
+        "duration_s": 2.119,
+        "adp1": {
+          "file": "apple_slow.adp1",
+          "bytes": 16908,
+          "samples": 33792,
+          "decode_mae": 23.9,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      }
+    },
+    "banana": {
+      "normal": {
+        "file": "banana.opus",
+        "bytes": 2131,
+        "duration_s": 1.663,
+        "adp1": {
+          "file": "banana.adp1",
+          "bytes": 13260,
+          "samples": 26496,
+          "decode_mae": 53.0,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      },
+      "slow": {
+        "file": "banana_slow.opus",
+        "bytes": 3269,
+        "duration_s": 2.358,
+        "adp1": {
+          "file": "banana_slow.adp1",
+          "bytes": 18828,
+          "samples": 37632,
+          "decode_mae": 51.2,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      }
+    },
+    "cat": {
+      "normal": {
+        "file": "cat.opus",
+        "bytes": 1621,
+        "duration_s": 1.423,
+        "adp1": {
+          "file": "cat.adp1",
+          "bytes": 11340,
+          "samples": 22656,
+          "decode_mae": 38.4,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      },
+      "slow": {
+        "file": "cat_slow.opus",
+        "bytes": 2235,
+        "duration_s": 2.022,
+        "adp1": {
+          "file": "cat_slow.adp1",
+          "bytes": 16140,
+          "samples": 32256,
+          "decode_mae": 38.6,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      }
+    },
+    "fish": {
+      "normal": {
+        "file": "fish.opus",
+        "bytes": 1842,
+        "duration_s": 1.494,
+        "adp1": {
+          "file": "fish.adp1",
+          "bytes": 11916,
+          "samples": 23808,
+          "decode_mae": 47.5,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      },
+      "slow": {
+        "file": "fish_slow.opus",
+        "bytes": 2544,
+        "duration_s": 2.119,
+        "adp1": {
+          "file": "fish_slow.adp1",
+          "bytes": 16908,
+          "samples": 33792,
+          "decode_mae": 46.6,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      }
+    },
+    "sun": {
+      "normal": {
+        "file": "sun.opus",
+        "bytes": 1843,
+        "duration_s": 1.494,
+        "adp1": {
+          "file": "sun.adp1",
+          "bytes": 11916,
+          "samples": 23808,
+          "decode_mae": 33.0,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      },
+      "slow": {
+        "file": "sun_slow.opus",
+        "bytes": 2439,
+        "duration_s": 2.119,
+        "adp1": {
+          "file": "sun_slow.adp1",
+          "bytes": 16908,
+          "samples": 33792,
+          "decode_mae": 32.6,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      }
+    },
+    "star": {
+      "normal": {
+        "file": "star.opus",
+        "bytes": 1988,
+        "duration_s": 1.615,
+        "adp1": {
+          "file": "star.adp1",
+          "bytes": 12876,
+          "samples": 25728,
+          "decode_mae": 57.4,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      },
+      "slow": {
+        "file": "star_slow.opus",
+        "bytes": 2760,
+        "duration_s": 2.287,
+        "adp1": {
+          "file": "star_slow.adp1",
+          "bytes": 18252,
+          "samples": 36480,
+          "decode_mae": 57.1,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      }
+    },
+    "milk": {
+      "normal": {
+        "file": "milk.opus",
+        "bytes": 1845,
+        "duration_s": 1.494,
+        "adp1": {
+          "file": "milk.adp1",
+          "bytes": 11916,
+          "samples": 23808,
+          "decode_mae": 17.3,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      },
+      "slow": {
+        "file": "milk_slow.opus",
+        "bytes": 2505,
+        "duration_s": 2.119,
+        "adp1": {
+          "file": "milk_slow.adp1",
+          "bytes": 16908,
+          "samples": 33792,
+          "decode_mae": 18.0,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      }
+    },
+    "eye": {
+      "normal": {
+        "file": "eye.opus",
+        "bytes": 1447,
+        "duration_s": 1.302,
+        "adp1": {
+          "file": "eye.adp1",
+          "bytes": 10380,
+          "samples": 20736,
+          "decode_mae": 17.2,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      },
+      "slow": {
+        "file": "eye_slow.opus",
+        "bytes": 1960,
+        "duration_s": 1.831,
+        "adp1": {
+          "file": "eye_slow.adp1",
+          "bytes": 14604,
+          "samples": 29184,
+          "decode_mae": 17.5,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      }
+    },
+    "tree": {
+      "normal": {
+        "file": "tree.opus",
+        "bytes": 1662,
+        "duration_s": 1.423,
+        "adp1": {
+          "file": "tree.adp1",
+          "bytes": 11340,
+          "samples": 22656,
+          "decode_mae": 34.5,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      },
+      "slow": {
+        "file": "tree_slow.opus",
+        "bytes": 2183,
+        "duration_s": 1.998,
+        "adp1": {
+          "file": "tree_slow.adp1",
+          "bytes": 15948,
+          "samples": 31872,
+          "decode_mae": 35.6,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      }
+    },
+    "car": {
+      "normal": {
+        "file": "car.opus",
+        "bytes": 1756,
+        "duration_s": 1.47,
+        "adp1": {
+          "file": "car.adp1",
+          "bytes": 11724,
+          "samples": 23424,
+          "decode_mae": 38.8,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      },
+      "slow": {
+        "file": "car_slow.opus",
+        "bytes": 2402,
+        "duration_s": 2.095,
+        "adp1": {
+          "file": "car_slow.adp1",
+          "bytes": 16716,
+          "samples": 33408,
+          "decode_mae": 39.7,
+          "format": "ADP1/IMA-ADPCM 16kHz mono"
+        }
+      }
+    }
+  },
+  "total_bytes": 42620,
+  "adpcm": {
+    "format": "ADP1 / IMA-ADPCM",
+    "sample_rate": 16000,
+    "channels": 1,
+    "decoder": "components/core/services/src/adpcm.c (adpcm_decode)",
+    "player": "services/audio_service.c (audio_service_play, PCM16)",
+    "container": "audio_clip_hdr_t: 12B 小端 [magic u32][rate u16][ch u8][rsv u8][num_samples u32]",
+    "note": "P0 设备端用 .adp1；.opus 保留供 P1 NAS 下发/在线 TTS/家长网页试听。解码用 240B 分块缓冲，勿一次性展开整段 PCM。",
+    "total_bytes": 286704
+  }
+}

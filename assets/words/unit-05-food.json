@@ -1,0 +1,18 @@
+{
+  "id": "unit-05",
+  "title": "食物",
+  "slug": "food",
+  "age": 6,
+  "words": [
+    { "id": "milk", "word": "milk", "ipa": "/mɪlk/", "cn": "牛奶", "syllables": 1, "say": "白白的，从盒子里倒出来", "draw": "一个牛奶盒 + 顶部小屋顶 + 一道倒出的细线", "strokes_max": 22, "tags": ["food", "drink"] },
+    { "id": "bread", "word": "bread", "ipa": "/bred/", "cn": "面包", "syllables": 1, "say": "软软的，可以切成一片一片", "draw": "圆顶方底的面包轮廓 + 一条竖向切纹", "strokes_max": 20, "tags": ["food"] },
+    { "id": "egg", "word": "egg", "ipa": "/eɡ/", "cn": "鸡蛋", "syllables": 1, "say": "椭圆的，敲开有黄黄的蛋黄", "draw": "一个椭圆 + 顶部锯齿状裂口；或平底锅里一个圆蛋黄", "strokes_max": 20, "tags": ["food"] },
+    { "id": "cake", "word": "cake", "ipa": "/keɪk/", "cn": "蛋糕", "syllables": 1, "say": "过生日的时候，上面插着蜡烛", "draw": "一个方块蛋糕 + 顶部一条奶油波浪 + 一根蜡烛和火苗", "strokes_max": 24, "tags": ["food"] },
+    { "id": "rice", "word": "rice", "ipa": "/raɪs/", "cn": "米饭", "syllables": 1, "say": "一碗白白的，一粒一粒", "draw": "一个碗（梯形 + 底部弧）+ 碗口上方几个小点", "strokes_max": 20, "tags": ["food"] },
+    { "id": "noodle", "word": "noodle", "ipa": "/ˈnuːdl/", "cn": "面条", "syllables": 2, "say": "长长的，会卷起来，吸溜吸溜", "draw": "一个碗 + 碗上方 3 条波浪长线 + 一双筷子", "strokes_max": 25, "tags": ["food"] },
+    { "id": "water", "word": "water", "ipa": "/ˈwɔːtə(r)/", "cn": "水", "syllables": 2, "say": "透明的，装在杯子里，喝起来凉凉的", "draw": "一个杯子 + 杯内一条水平水面线 + 两个小气泡点", "strokes_max": 18, "tags": ["food", "drink"] },
+    { "id": "juice", "word": "juice", "ipa": "/dʒuːs/", "cn": "果汁", "syllables": 1, "say": "甜甜的，用吸管喝", "draw": "一个杯子 + 一根斜插的吸管 + 一片小水果装饰", "strokes_max": 20, "tags": ["food", "drink"] },
+    { "id": "cookie", "word": "cookie", "ipa": "/ˈkʊki/", "cn": "饼干", "syllables": 2, "say": "圆圆的，上面有小巧克力豆", "draw": "一个大圆 + 圆内 5 到 6 个小点", "strokes_max": 20, "tags": ["food"] },
+    { "id": "ice-cream", "word": "ice cream", "ipa": "/aɪs kriːm/", "cn": "冰淇淋", "syllables": 2, "say": "甜筒上面一球一球，凉凉的", "draw": "一个倒三角甜筒（带交叉格纹）+ 上方两个叠起的圆球", "strokes_max": 25, "tags": ["food"] }
+  ]
+}

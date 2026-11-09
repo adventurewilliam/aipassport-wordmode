@@ -1,0 +1,18 @@
+{
+  "id": "unit-06",
+  "title": "自然与交通",
+  "slug": "nature-transport",
+  "age": 6,
+  "words": [
+    { "id": "sun", "word": "sun", "ipa": "/sʌn/", "cn": "太阳", "syllables": 1, "say": "圆圆的、暖暖的，白天挂在天上", "draw": "一个圆 + 四周 8 条放射短线", "strokes_max": 20, "tags": ["nature"] },
+    { "id": "moon", "word": "moon", "ipa": "/muːn/", "cn": "月亮", "syllables": 1, "say": "晚上弯弯的，像一条小船", "draw": "一个月牙（两条弧线围成）+ 旁边 2 颗小星点", "strokes_max": 20, "tags": ["nature"] },
+    { "id": "cloud", "word": "cloud", "ipa": "/klaʊd/", "cn": "云", "syllables": 1, "say": "白白的、软软的，飘在天上", "draw": "3 到 4 段圆弧连成一朵云 + 一条平底边", "strokes_max": 22, "tags": ["nature"] },
+    { "id": "tree", "word": "tree", "ipa": "/triː/", "cn": "树", "syllables": 1, "say": "有粗粗的树干和大大的树冠", "draw": "一个矩形树干 + 上方一个圆形树冠 + 两条分枝线", "strokes_max": 20, "tags": ["nature"] },
+    { "id": "flower", "word": "flower", "ipa": "/ˈflaʊə(r)/", "cn": "花", "syllables": 2, "say": "花瓣围一圈，中间黄黄的", "draw": "中心一个小圆 + 周围 5 片花瓣 + 一根茎 + 两片小叶", "strokes_max": 25, "tags": ["nature"] },
+    { "id": "car", "word": "car", "ipa": "/kɑː(r)/", "cn": "汽车", "syllables": 1, "say": "四个轮子，嘀嘀嘀", "draw": "车身（矩形 + 上方梯形车顶）+ 2 个圆轮 + 2 个窗", "strokes_max": 22, "tags": ["transport"] },
+    { "id": "bus", "word": "bus", "ipa": "/bʌs/", "cn": "公交车", "syllables": 1, "say": "长长的，有好多窗户", "draw": "一个长矩形车身 + 3 个小方窗 + 2 个圆轮", "strokes_max": 22, "tags": ["transport"] },
+    { "id": "bike", "word": "bike", "ipa": "/baɪk/", "cn": "自行车", "syllables": 1, "say": "两个轮子，用脚蹬着走", "draw": "两个圆轮 + 三角车架 + 车把和座椅短线", "strokes_max": 24, "tags": ["transport"] },
+    { "id": "boat", "word": "boat", "ipa": "/bəʊt/", "cn": "船", "syllables": 1, "say": "在水上飘呀飘", "draw": "梯形船身 + 一根桅杆 + 三角帆 + 两条水波线", "strokes_max": 22, "tags": ["transport"] },
+    { "id": "plane", "word": "plane", "ipa": "/pleɪn/", "cn": "飞机", "syllables": 1, "say": "有大翅膀，在天上飞", "draw": "细长机身 + 两侧三角大翼 + 尾部小翼 + 一个小窗", "strokes_max": 24, "tags": ["transport"] }
+  ]
+}

@@ -1,0 +1,16 @@
+--- a/components/ui/presentation/include/presentation/ui_plays.h
++++ b/components/ui/presentation/include/presentation/ui_plays.h
+@@
+-typedef enum { UI_PLAY_ANSWER, UI_PLAY_CLICKER, UI_PLAY_DODGE, UI_PLAY_XIAOZHI, UI_PLAY_CONNECT } ui_play_id_t;
++/* 单词模式置顶：菜单第 1 项且默认高亮，长按 OK 呼出后按一下 OK 直接进入。
++ * 顺序即菜单顺序，务必保持在首位（契约测试会静态检查）。*/
++typedef enum { UI_PLAY_WORDMODE, UI_PLAY_ANSWER, UI_PLAY_CLICKER,
++               UI_PLAY_DODGE, UI_PLAY_XIAOZHI, UI_PLAY_CONNECT } ui_play_id_t;
+ typedef bool (*ui_play_select_cb_t)(ui_play_id_t play, void *user);
+ typedef void (*ui_plays_exit_cb_t)(void *user);
+@@
+ void ui_plays_suspend(void); // Keep only the root while a separate child screen is active.
++/* 单词模式内把菜单首项动态换成「返回小智」，并去掉原末项「返回」，
++ * 保持 7 项总数不变。进出都是「长按 OK + OK」两步。*/
++void ui_plays_set_wordmode_context(bool in_wordmode);
+ void ui_plays_answer(const ab_session_view_t *view, uint16_t level, uint64_t now_ms);
