@@ -3,7 +3,7 @@
 #
 # 用法：
 #   GITHUB_TOKEN=<你的PAT> sh push-to-github.sh [owner/repo]
-# 默认目标：adventurewilliam/aipassport-wordmode
+# 默认目标：adventurewilliam/proxyhm（已授权的公开仓库，见 README.md）
 #
 # 令牌获取（任选其一）：
 #   1) 环境变量 GITHUB_TOKEN（推荐：一个有 repo 权限的 Personal Access Token）
@@ -17,7 +17,7 @@
 set -e
 cd "$(dirname "$0")"
 
-REPO="${1:-adventurewilliam/aipassport-wordmode}"
+REPO="${1:-adventurewilliam/proxyhm}"
 
 # 仅当环境变量未设置、且当前环境存在 WorkBuddy 的连接器脚本时才自动读取
 if [ -z "$GITHUB_TOKEN" ] && \

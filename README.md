@@ -1,5 +1,8 @@
 # AI Passport 小朋友单词模式 · P0
 
+> 公开仓库：[`adventurewilliam/proxyhm`](https://github.com/adventurewilliam/proxyhm) · 分支 `main`（本仓库为公开仓库，代码与思路说明均可直接查看）
+> 原仓库空壳说明保留在 [`docs/upstream-proxyhm-README.md`](docs/upstream-proxyhm-README.md)。
+
 给 **6 岁、不识字**的小朋友用的英文单词固件：**看图 → 听怎么读 → 认识/不记得二选一 → 不懂就问小智**。
 
 - 底层：[`arraylee/ai-passport-xiaozhi-custom`](https://github.com/arraylee/ai-passport-xiaozhi-custom)（小智固件移植到 AI Passport）
